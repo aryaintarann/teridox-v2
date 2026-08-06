@@ -1,0 +1,125 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-charcoal: var(--charcoal);
+  --color-body: var(--body-color);
+  --color-mute: var(--mute);
+  --color-stone: var(--stone);
+  --color-ash: var(--ash);
+  --color-canvas: var(--canvas);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-card: var(--surface-card);
+  --color-surface-dark: var(--surface-dark);
+  --color-surface-dark-elevated: var(--surface-dark-elevated);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-mute: var(--on-dark-mute);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+
+  --color-background: var(--canvas);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface-card);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--canvas);
+  --color-popover-foreground: var(--ink);
+  --color-secondary: var(--surface-soft);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--surface-soft);
+  --color-muted-foreground: var(--mute);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: var(--on-dark);
+  --color-border: var(--hairline);
+  --color-input: var(--hairline);
+  --color-ring: var(--ink);
+
+  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: var(--font-jetbrains-mono); /* Force everything to mono */
+
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-full: 9999px;
+  --radius: 4px;
+
+  --spacing-xxs: 1px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  --spacing-section: 96px;
+}
+
+:root {
+  --primary: #201d1d;
+  --primary-foreground: #fdfcfc;
+  --ink: #201d1d;
+  --ink-deep: #0f0000;
+  --charcoal: #302c2c;
+  --body-color: #424245;
+  --mute: #646262;
+  --stone: #6e6e73;
+  --ash: #9a9898;
+  --canvas: #fdfcfc;
+  --surface-soft: #f8f7f7;
+  --surface-card: #f1eeee;
+  --surface-dark: #201d1d;
+  --surface-dark-elevated: #302c2c;
+  --hairline: rgba(15,0,0,0.12);
+  --hairline-strong: #646262;
+  --on-dark: #fdfcfc;
+  --on-dark-mute: #9a9898;
+  --accent: #007aff;
+  --accent-hover: #0056b3;
+  --accent-active: #004085;
+  --warning: #ff9f0a;
+  --danger: #ff3b30;
+  --success: #30d158;
+}
+
+.dark {
+  --primary: #fdfcfc;
+  --primary-foreground: #201d1d;
+  --ink: #fdfcfc;
+  --ink-deep: #f1eeee;
+  --charcoal: #e5e5e5;
+  --body-color: #a3a3a3;
+  --mute: #a3a3a3;
+  --stone: #737373;
+  --ash: #525252;
+  --canvas: #171717;
+  --surface-soft: #262626;
+  --surface-card: #262626;
+  --surface-dark: #201d1d;
+  --surface-dark-elevated: #302c2c;
+  --hairline: rgba(255,255,255,0.12);
+  --hairline-strong: #a3a3a3;
+  --on-dark: #fdfcfc;
+  --on-dark-mute: #9a9898;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-mono antialiased;
+  }
+  html {
+    @apply font-mono;
+  }
+}
