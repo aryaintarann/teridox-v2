@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { Plus, Edit, Trash2 } from 'lucide-react'
+import { Plus, Trash2, CheckCircle2, XCircle } from 'lucide-react'
+import { toggleTestimonialStatus } from '@/app/admin/actions'
 
 export default async function AdminTestimonials() {
   const supabase = await createClient()
@@ -38,11 +39,17 @@ export default async function AdminTestimonials() {
                     </span>
                   </td>
                   <td className="p-4 text-right">
-                    <div className="flex justify-end gap-2">
-                      <Link href={`/admin/testimonials/${item.id}`} className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-sm hover:bg-surface-soft">
-                        <Edit className="w-4 h-4" />
-                      </Link>
-                      <button className="p-2 text-muted-foreground hover:text-destructive transition-colors rounded-sm hover:bg-destructive/10">
+                    <div className="flex justify-end gap-2 items-center">
+                      <form action={toggleTestimonialStatus.bind(null, item.id, item.is_active)}>
+                        <button 
+                          type="submit" 
+                          title={item.is_active ? "Deactivate" : "Activate"}
+                          className={`p-2 transition-colors rounded-sm hover:bg-surface-soft ${item.is_active ? 'text-green-500 hover:text-green-600' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                          {item.is_active ? <XCircle className="w-4 h-4" /> : <CheckCircle2 className="w-4 h-4" />}
+                        </button>
+                      </form>
+                      <button className="p-2 text-muted-foreground hover:text-destructive transition-colors rounded-sm hover:bg-destructive/10" title="Delete">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>

@@ -62,3 +62,20 @@ export async function createBlogPost(formData: FormData): Promise<void> {
   revalidatePath('/')
   redirect('/admin/blog')
 }
+
+export async function toggleTestimonialStatus(id: string, currentStatus: boolean): Promise<void> {
+  const supabase = await createClient()
+  
+  const { error } = await supabase
+    .from('testimonials')
+    .update({ is_active: !currentStatus })
+    .eq('id', id)
+
+  if (error) {
+    console.error('Error toggling testimonial:', error)
+    throw new Error('Failed to toggle status')
+  }
+
+  revalidatePath('/admin/testimonials')
+  revalidatePath('/')
+}
