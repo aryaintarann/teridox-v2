@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { FadeIn } from "@/components/animations/fade-in";
 import { createClient } from "@/lib/supabase/server";
 
@@ -27,16 +28,17 @@ export default async function Project() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
         {projects && projects.length > 0 ? (
           projects.map((project: any) => (
-            <div key={project.id} className="border border-border p-4 bg-surface-soft flex flex-col h-full rounded-sm hover:border-muted-foreground transition-colors cursor-pointer">
-              <div className="aspect-video bg-surface-card border border-border mb-4 flex items-center justify-center text-muted-foreground overflow-hidden">
+            <Link href={`/project/${project.slug}`} key={project.id} className="border border-border p-4 bg-surface-soft flex flex-col h-full rounded-sm hover:border-foreground/50 transition-colors cursor-pointer group">
+              <div className="aspect-video bg-surface-card border border-border mb-4 flex items-center justify-center text-muted-foreground overflow-hidden relative">
                 {project.cover_image_url ? (
                   <img src={project.cover_image_url} alt={project.title} className="w-full h-full object-cover" />
                 ) : (
                   <span>[ No Image ]</span>
                 )}
+                <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </div>
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-heading-md font-bold">{project.title}</h3>
+                <h3 className="text-heading-md font-bold group-hover:underline">{project.title}</h3>
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{project.category}</span>
               </div>
               <p className="text-body-md text-body mb-4 line-clamp-2 flex-grow">
@@ -47,7 +49,7 @@ export default async function Project() {
                   <span key={i} className="text-xs text-muted-foreground">{tech}</span>
                 ))}
               </div>
-            </div>
+            </Link>
           ))
         ) : (
           <p className="text-muted-foreground col-span-2 text-center py-12 border border-border bg-surface-soft">

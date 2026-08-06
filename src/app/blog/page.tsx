@@ -29,14 +29,14 @@ export default async function Blog() {
                 </span>
               </div>
               <h2 className="text-xl font-bold mb-3 hover:underline cursor-pointer">
-                <Link href={`/blog`}>
+                <Link href={`/blog/${post.slug}`}>
                   {post.title}
                 </Link>
               </h2>
               <p className="text-body-md text-body mb-4">
                 {post.excerpt}
               </p>
-              <Link href={`/blog`} className="text-sm font-bold text-foreground">
+              <Link href={`/blog/${post.slug}`} className="text-sm font-bold text-foreground">
                 Read more [→]
               </Link>
             </article>
