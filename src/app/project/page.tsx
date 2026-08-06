@@ -1,7 +1,10 @@
 import React from "react";
 
+import { FadeIn } from "@/components/animations/fade-in";
+
 export default function Project() {
   return (
+    <FadeIn delay={0.1}>
     <div className="container mx-auto px-4 md:px-6 py-16 max-w-5xl">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
         <h1 className="text-display-xl font-bold">Projects</h1>
@@ -57,5 +60,6 @@ export default function Project() {
         </div>
       </div>
     </div>
+    </FadeIn>
   );
 }

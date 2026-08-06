@@ -1,7 +1,10 @@
 import React from "react";
 
+import { FadeIn } from "@/components/animations/fade-in";
+
 export default function Contact() {
   return (
+    <FadeIn delay={0.1}>
     <div className="container mx-auto px-4 md:px-6 py-16 max-w-5xl">
       <h1 className="text-display-xl font-bold mb-4">Contact Us</h1>
       <p className="text-body-md text-muted-foreground mb-12 max-w-2xl">
@@ -108,5 +111,6 @@ export default function Contact() {
         </div>
       </div>
     </div>
+    </FadeIn>
   );
 }

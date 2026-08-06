@@ -1,8 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
+import { FadeIn } from "@/components/animations/fade-in";
+
 export default function Blog() {
   return (
+    <FadeIn delay={0.1}>
     <div className="container mx-auto px-4 md:px-6 py-16 max-w-4xl">
       <h1 className="text-display-xl font-bold mb-8">Blog</h1>
       
@@ -46,5 +49,6 @@ export default function Blog() {
         </article>
       </div>
     </div>
+    </FadeIn>
   );
 }

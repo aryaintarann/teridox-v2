@@ -1,7 +1,10 @@
 import React from "react";
 
+import { FadeIn } from "@/components/animations/fade-in";
+
 export default function About() {
   return (
+    <FadeIn delay={0.1}>
     <div className="container mx-auto px-4 md:px-6 py-16 max-w-3xl">
       <h1 className="text-display-xl font-bold mb-8">About Teridox</h1>
       
@@ -67,5 +70,6 @@ export default function About() {
         </section>
       </div>
     </div>
+    </FadeIn>
   );
 }
