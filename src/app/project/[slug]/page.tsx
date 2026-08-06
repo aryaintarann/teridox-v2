@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { FadeIn } from "@/components/animations/fade-in";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 
 export default async function ProjectDetail(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
@@ -48,7 +48,7 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
 
         <div 
           className="prose prose-neutral dark:prose-invert prose-p:leading-relaxed prose-headings:font-bold max-w-none"
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description || '') }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(project.description || '', { allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ]) }) }}
         />
       </article>
     </FadeIn>
