@@ -48,7 +48,7 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
 
         <div 
           className="prose prose-neutral dark:prose-invert prose-p:leading-relaxed prose-headings:font-bold max-w-none"
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description) }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description || '') }}
         />
       </article>
     </FadeIn>

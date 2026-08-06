@@ -44,7 +44,7 @@ export default async function BlogPost(props: { params: Promise<{ slug: string }
 
         <div 
           className="prose prose-neutral dark:prose-invert prose-p:leading-relaxed prose-headings:font-bold prose-a:text-foreground hover:prose-a:text-foreground/80 max-w-none"
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content || '') }}
         />
       </article>
     </FadeIn>
