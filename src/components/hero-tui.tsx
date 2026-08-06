@@ -1,20 +1,25 @@
 "use client";
 
 import React, { useState } from "react";
-import { Copy, Check } from "lucide-react";
 import Link from "next/link";
 
 export function HeroTUI() {
-  const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState("web");
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText("curl -fsSL https://teridox.com/contact | bash");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const services = {
+    web: {
+      description: "Custom websites and web applications built with modern Jamstack technologies for maximum performance.",
+    },
+    mobile: {
+      description: "Cross-platform mobile applications that run smoothly on iOS and Android with a single codebase.",
+    },
+    ai: {
+      description: "Intelligent automation and AI-driven features seamlessly integrated into your workflows and applications.",
+    }
   };
 
-  const tabs = ["web", "mobile", "ai", "engine"];
+  const activeService = services[activeTab as keyof typeof services] || services.web;
+  const tabs = ["web", "mobile", "ai"];
 
   return (
     <section className="dark bg-[#0a0a0a] px-4 py-24 md:py-32 font-mono w-full min-h-[80vh] flex items-center">
@@ -62,19 +67,11 @@ export function HeroTUI() {
             ))}
           </div>
           {/* Content */}
-          <div className="p-5 md:p-6 flex items-center justify-between bg-[#111111]">
-            <div className="flex items-center text-sm md:text-base font-mono overflow-x-auto mr-4 hide-scrollbar">
-              <span className="text-[#888888] whitespace-nowrap select-none mr-2">curl -fsSL https://</span>
-              <span className="text-foreground font-bold whitespace-nowrap">teridox.com/contact</span>
-              <span className="text-[#888888] whitespace-nowrap select-none ml-2">| bash</span>
-            </div>
-            <button 
-              onClick={handleCopy}
-              className="text-[#888888] hover:text-foreground transition-colors shrink-0 p-2" 
-              aria-label="Copy to clipboard"
-            >
-              {copied ? <Check size={18} className="text-success" /> : <Copy size={18} />}
-            </button>
+          <div className="p-6 md:p-8 flex items-center bg-[#111111] min-h-[140px]">
+            <p className="text-foreground text-base md:text-lg leading-relaxed font-mono">
+              <span className="text-[#888888] mr-2">/&gt;</span>
+              {activeService.description}
+            </p>
           </div>
         </div>
 
