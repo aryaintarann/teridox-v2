@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Plus, Edit, Trash2 } from 'lucide-react'
+import { deleteBlogPost } from '@/app/admin/actions'
 
 export default async function AdminBlog() {
   const supabase = await createClient()
@@ -38,13 +39,15 @@ export default async function AdminBlog() {
                     </span>
                   </td>
                   <td className="p-4 text-right">
-                    <div className="flex justify-end gap-2">
-                      <Link href={`/admin/blog/${post.id}`} className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-sm hover:bg-surface-soft">
+                    <div className="flex justify-end gap-2 items-center">
+                      <Link href={`/admin/blog/${post.id}`} className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-sm hover:bg-surface-soft" title="Edit">
                         <Edit className="w-4 h-4" />
                       </Link>
-                      <button className="p-2 text-muted-foreground hover:text-destructive transition-colors rounded-sm hover:bg-destructive/10">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <form action={deleteBlogPost.bind(null, post.id)}>
+                        <button type="submit" className="p-2 text-muted-foreground hover:text-destructive transition-colors rounded-sm hover:bg-destructive/10" title="Delete">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </form>
                     </div>
                   </td>
                 </tr>
