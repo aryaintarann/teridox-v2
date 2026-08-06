@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { FadeIn } from "@/components/animations/fade-in";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import DOMPurify from 'isomorphic-dompurify';
 
 export default async function BlogPost(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
@@ -43,7 +44,7 @@ export default async function BlogPost(props: { params: Promise<{ slug: string }
 
         <div 
           className="prose prose-neutral dark:prose-invert prose-p:leading-relaxed prose-headings:font-bold prose-a:text-foreground hover:prose-a:text-foreground/80 max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
         />
       </article>
     </FadeIn>

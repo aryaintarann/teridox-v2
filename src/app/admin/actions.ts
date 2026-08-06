@@ -7,6 +7,9 @@ import { redirect } from 'next/navigation'
 export async function createProject(formData: FormData): Promise<void> {
   const supabase = await createClient()
 
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized: You must be logged in to perform this action.')
+
   const techStackString = formData.get('tech_stack') as string
   const techStack = techStackString 
     ? techStackString.split(',').map(s => s.trim()).filter(Boolean)
@@ -39,6 +42,9 @@ export async function createProject(formData: FormData): Promise<void> {
 export async function createBlogPost(formData: FormData): Promise<void> {
   const supabase = await createClient()
 
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized: You must be logged in to perform this action.')
+
   const data = {
     title: formData.get('title') as string,
     slug: (formData.get('title') as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
@@ -66,6 +72,9 @@ export async function createBlogPost(formData: FormData): Promise<void> {
 export async function toggleTestimonialStatus(id: string, currentStatus: boolean): Promise<void> {
   const supabase = await createClient()
   
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized: You must be logged in to perform this action.')
+
   const { error } = await supabase
     .from('testimonials')
     .update({ is_active: !currentStatus })
