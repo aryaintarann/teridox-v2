@@ -1,8 +1,36 @@
 import { HeroTUI } from "@/components/hero-tui";
 import Link from "next/link";
 import { FadeIn } from "@/components/animations/fade-in";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const supabase = await createClient();
+  
+  // Fetch latest 4 projects
+  const { data: projects } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("status", "published")
+    .order("created_at", { ascending: false })
+    .limit(4);
+    
+  // Fetch active testimonials
+  const { data: testimonials } = await supabase
+    .from("testimonials")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", { ascending: false });
+    
+  // Fetch latest 3 blog posts
+  const { data: blogs } = await supabase
+    .from("blog_posts")
+    .select("*")
+    .eq("status", "published")
+    .order("created_at", { ascending: false })
+    .limit(3);
+
   return (
     <div className="flex flex-col items-center w-full overflow-hidden">
       <HeroTUI />
@@ -85,34 +113,26 @@ export default function Home() {
           <div className="h-[1px] w-full bg-border mb-8"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="group cursor-pointer">
-              <div className="w-full aspect-video bg-surface-card border border-border mb-4 overflow-hidden relative rounded-sm">
-                 <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </div>
-              <h3 className="font-bold text-lg mb-1 group-hover:underline">E-Commerce Replatforming</h3>
-              <p className="text-muted-foreground text-sm">Web Development</p>
-            </div>
-            <div className="group cursor-pointer">
-              <div className="w-full aspect-video bg-surface-card border border-border mb-4 overflow-hidden relative rounded-sm">
-                 <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </div>
-              <h3 className="font-bold text-lg mb-1 group-hover:underline">Fintech Mobile Wallet</h3>
-              <p className="text-muted-foreground text-sm">Mobile App</p>
-            </div>
-            <div className="group cursor-pointer">
-              <div className="w-full aspect-video bg-surface-card border border-border mb-4 overflow-hidden relative rounded-sm">
-                 <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </div>
-              <h3 className="font-bold text-lg mb-1 group-hover:underline">AI Customer Support Bot</h3>
-              <p className="text-muted-foreground text-sm">AI Integration</p>
-            </div>
-            <div className="group cursor-pointer">
-              <div className="w-full aspect-video bg-surface-card border border-border mb-4 overflow-hidden relative rounded-sm">
-                 <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </div>
-              <h3 className="font-bold text-lg mb-1 group-hover:underline">Logistics Dashboard</h3>
-              <p className="text-muted-foreground text-sm">Web Development</p>
-            </div>
+            {projects && projects.length > 0 ? (
+              projects.map((project: any) => (
+                <Link href={`/project`} key={project.id} className="group cursor-pointer block">
+                  <div className="w-full aspect-video bg-surface-card border border-border mb-4 overflow-hidden relative rounded-sm flex items-center justify-center">
+                     {project.cover_image_url ? (
+                        <img src={project.cover_image_url} alt={project.title} className="w-full h-full object-cover" />
+                     ) : (
+                        <span className="text-muted-foreground text-sm">[ No Image ]</span>
+                     )}
+                     <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  </div>
+                  <h3 className="font-bold text-lg mb-1 group-hover:underline">{project.title}</h3>
+                  <p className="text-muted-foreground text-sm">{project.category}</p>
+                </Link>
+              ))
+            ) : (
+              <p className="text-muted-foreground col-span-2 py-8 text-center border border-border bg-surface-soft">
+                Projects coming soon.
+              </p>
+            )}
           </div>
         </section>
       </FadeIn>
@@ -124,23 +144,20 @@ export default function Home() {
           <div className="h-[1px] w-full bg-border mb-8"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            <div className="flex flex-col">
-              <div className="text-4xl text-muted-foreground font-serif leading-none mb-2">"</div>
-              <p className="text-lg text-foreground leading-relaxed flex-grow mb-6">
-                Teridox completely transformed our digital presence. Their attention to detail and ability to deliver on time is unmatched.
-              </p>
-              <div className="font-bold">Sarah Jenkins</div>
-              <div className="text-sm text-muted-foreground font-mono">CTO, TechFlow</div>
-            </div>
-            
-            <div className="flex flex-col">
-              <div className="text-4xl text-muted-foreground font-serif leading-none mb-2">"</div>
-              <p className="text-lg text-foreground leading-relaxed flex-grow mb-6">
-                The AI integration they built for us reduced our manual processing time by 80%. Highly recommended team of experts.
-              </p>
-              <div className="font-bold">David Chen</div>
-              <div className="text-sm text-muted-foreground font-mono">Operations Director, Nexus</div>
-            </div>
+            {testimonials && testimonials.length > 0 ? (
+              testimonials.map((testi: any) => (
+                <div key={testi.id} className="flex flex-col">
+                  <div className="text-4xl text-muted-foreground font-serif leading-none mb-2">"</div>
+                  <p className="text-lg text-foreground leading-relaxed flex-grow mb-6">
+                    {testi.quote}
+                  </p>
+                  <div className="font-bold">{testi.client_name}</div>
+                  <div className="text-sm text-muted-foreground font-mono">{testi.client_position}</div>
+                </div>
+              ))
+            ) : (
+              <p className="text-muted-foreground col-span-2">No testimonials available yet.</p>
+            )}
           </div>
         </section>
       </FadeIn>
@@ -155,23 +172,21 @@ export default function Home() {
           <div className="h-[1px] w-full bg-border mb-8"></div>
           
           <div className="space-y-6">
-            <Link href="/blog" className="group block border border-border p-6 hover:border-foreground transition-colors bg-surface-card rounded-sm">
-              <div className="text-sm text-muted-foreground mb-2 font-mono">August 12, 2026</div>
-              <h3 className="text-xl font-bold mb-2 group-hover:underline">The Future of Jamstack in Enterprise Applications</h3>
-              <p className="text-muted-foreground">Exploring how large-scale businesses are leveraging static site generation and headless CMS for better security and performance.</p>
-            </Link>
-            
-            <Link href="/blog" className="group block border border-border p-6 hover:border-foreground transition-colors bg-surface-card rounded-sm">
-              <div className="text-sm text-muted-foreground mb-2 font-mono">July 28, 2026</div>
-              <h3 className="text-xl font-bold mb-2 group-hover:underline">5 AI Automation Trends Transforming B2B Workflows</h3>
-              <p className="text-muted-foreground">A deep dive into how machine learning models and intelligent agents are streamlining operations across various industries.</p>
-            </Link>
-            
-            <Link href="/blog" className="group block border border-border p-6 hover:border-foreground transition-colors bg-surface-card rounded-sm">
-              <div className="text-sm text-muted-foreground mb-2 font-mono">July 10, 2026</div>
-              <h3 className="text-xl font-bold mb-2 group-hover:underline">React Native vs Flutter: Choosing the Right Framework</h3>
-              <p className="text-muted-foreground">An objective comparison of the top two cross-platform mobile development frameworks to help you make an informed technical decision.</p>
-            </Link>
+            {blogs && blogs.length > 0 ? (
+              blogs.map((blog: any) => (
+                <Link key={blog.id} href={`/blog`} className="group block border border-border p-6 hover:border-foreground transition-colors bg-surface-card rounded-sm">
+                  <div className="text-sm text-muted-foreground mb-2 font-mono">
+                    {new Date(blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 group-hover:underline">{blog.title}</h3>
+                  <p className="text-muted-foreground">{blog.excerpt || 'Read more about this topic.'}</p>
+                </Link>
+              ))
+            ) : (
+              <p className="text-muted-foreground py-8 text-center border border-border bg-surface-soft">
+                No articles published yet.
+              </p>
+            )}
           </div>
         </section>
       </FadeIn>

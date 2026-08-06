@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${jetbrainsMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-mono bg-background text-foreground selection:bg-accent selection:text-primary-foreground">
+      <body suppressHydrationWarning className="min-h-full flex flex-col font-mono bg-background text-foreground selection:bg-accent selection:text-primary-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

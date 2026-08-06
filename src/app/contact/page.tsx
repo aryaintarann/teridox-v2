@@ -1,8 +1,29 @@
-import React from "react";
+"use client";
 
+import React, { useState } from "react";
 import { FadeIn } from "@/components/animations/fade-in";
+import { submitContactForm } from "@/app/contact/actions";
 
 export default function Contact() {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("loading");
+    
+    const formData = new FormData(e.currentTarget);
+    const result = await submitContactForm(formData);
+    
+    if (result.success) {
+      setStatus("success");
+      (e.target as HTMLFormElement).reset();
+    } else {
+      setStatus("error");
+      setErrorMsg(result.error || "An error occurred");
+    }
+  };
+
   return (
     <FadeIn delay={0.1}>
     <div className="container mx-auto px-4 md:px-6 py-16 max-w-5xl">
@@ -14,13 +35,26 @@ export default function Contact() {
       <div className="flex flex-col md:flex-row gap-12 lg:gap-24">
         {/* Contact Form */}
         <div className="md:w-1/2">
-          <form className="space-y-6">
+          {status === "success" && (
+            <div className="bg-green-500/10 border border-green-500/20 text-green-500 p-4 rounded-sm mb-6 font-medium">
+              Thank you! Your message has been sent successfully. We will get back to you soon.
+            </div>
+          )}
+          
+          {status === "error" && (
+            <div className="bg-destructive/10 border border-destructive/20 text-destructive p-4 rounded-sm mb-6 font-medium">
+              {errorMsg}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-bold block">
                 Full name <span className="text-destructive">*</span>
               </label>
               <input 
                 type="text" 
+                name="name"
                 id="name" 
                 className="w-full bg-surface-soft border border-border rounded-sm px-3 py-2 text-body-md focus:bg-background focus:border-foreground outline-none transition-colors"
                 required
@@ -33,6 +67,7 @@ export default function Contact() {
               </label>
               <input 
                 type="email" 
+                name="email"
                 id="email" 
                 className="w-full bg-surface-soft border border-border rounded-sm px-3 py-2 text-body-md focus:bg-background focus:border-foreground outline-none transition-colors"
                 required
@@ -44,6 +79,7 @@ export default function Contact() {
                 Service of interest
               </label>
               <select 
+                name="interest"
                 id="interest" 
                 className="w-full bg-surface-soft border border-border rounded-sm px-3 py-2 text-body-md focus:bg-background focus:border-foreground outline-none transition-colors"
               >
@@ -59,6 +95,7 @@ export default function Contact() {
                 How can we help? <span className="text-destructive">*</span>
               </label>
               <textarea 
+                name="message"
                 id="message" 
                 rows={5}
                 className="w-full bg-surface-soft border border-border rounded-sm px-3 py-3 text-body-md focus:bg-background focus:border-foreground outline-none transition-colors resize-y"
@@ -68,9 +105,10 @@ export default function Contact() {
             
             <button 
               type="submit" 
-              className="bg-primary text-primary-foreground font-medium rounded-sm px-6 py-2 hover:bg-ink-deep transition-colors w-full sm:w-auto"
+              disabled={status === "loading"}
+              className="bg-primary text-primary-foreground font-medium rounded-sm px-6 py-2 hover:bg-ink-deep transition-colors w-full sm:w-auto disabled:opacity-50"
             >
-              Send message
+              {status === "loading" ? "Sending..." : "Send message"}
             </button>
           </form>
         </div>
