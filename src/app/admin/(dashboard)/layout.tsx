@@ -37,6 +37,10 @@ export default function AdminLayout({
               <MessageSquare className="w-4 h-4" />
               Contact Inbox
             </Link>
+            <Link href="/admin/settings" className="flex items-center gap-3 px-3 py-2 rounded-sm text-sm font-medium hover:bg-surface-soft text-muted-foreground hover:text-foreground">
+              <Settings className="w-4 h-4" />
+              Settings
+            </Link>
           </nav>
         </div>
         
