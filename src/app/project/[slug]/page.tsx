@@ -4,6 +4,33 @@ import { FadeIn } from "@/components/animations/fade-in";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import sanitizeHtml from 'sanitize-html';
+import { Metadata } from 'next';
+
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
+  const supabase = await createClient();
+  const { data: project } = await supabase.from("projects").select("*").eq("slug", params.slug).single();
+
+  if (!project) return { title: 'Project Not Found' };
+
+  return {
+    title: project.title,
+    description: project.summary,
+    openGraph: {
+      title: project.title,
+      description: project.summary,
+      url: `https://teridox.com/project/${project.slug}`,
+      type: 'article',
+      images: project.cover_image_url ? [project.cover_image_url] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: project.title,
+      description: project.summary,
+      images: project.cover_image_url ? [project.cover_image_url] : [],
+    }
+  };
+}
 
 export default async function ProjectDetail(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
@@ -19,8 +46,25 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
     notFound();
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": project.title,
+    "description": project.summary,
+    "url": `https://teridox.com/project/${project.slug}`,
+    "image": project.cover_image_url,
+    "creator": {
+      "@type": "Organization",
+      "name": "Teridox"
+    }
+  };
+
   return (
     <FadeIn delay={0.1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <article className="container mx-auto px-4 md:px-6 py-16 max-w-4xl">
         <Link href="/project" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 text-sm transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to projects
