@@ -78,9 +78,17 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
             </div>
             
             <h1 className="text-display-sm md:text-display-md font-bold mb-4">{project.title}</h1>
-            <p className="text-body-lg text-muted-foreground max-w-2xl">
+            <p className="text-body-lg text-muted-foreground max-w-2xl mb-6">
               {project.summary}
             </p>
+            
+            <div className="flex flex-wrap gap-2">
+              {project.tech_stack?.map((tech: string, i: number) => (
+                <span key={i} className="bg-surface-soft border border-border px-3 py-1 rounded-sm text-xs font-medium">
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
           
           {project.preview_url && (
@@ -93,14 +101,6 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
               Live Preview <ExternalLink className="w-4 h-4" />
             </a>
           )}
-        </div>
-          <div className="flex flex-wrap gap-2">
-            {project.tech_stack?.map((tech: string, i: number) => (
-              <span key={i} className="bg-surface-soft border border-border px-3 py-1 rounded-sm text-xs font-medium">
-                {tech}
-              </span>
-            ))}
-          </div>
         </div>
 
         {project.cover_image_url && (
