@@ -186,3 +186,29 @@ export async function toggleTestimonialStatus(id: string, currentStatus: boolean
   revalidatePath('/admin/testimonials')
   revalidatePath('/')
 }
+
+export async function updateSiteSettings(formData: FormData): Promise<void> {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const data = {
+    email: formData.get('email') as string,
+    whatsapp: formData.get('whatsapp') as string,
+    linkedin: formData.get('linkedin') as string,
+    instagram: formData.get('instagram') as string,
+    github: formData.get('github') as string,
+    updated_at: new Date().toISOString()
+  }
+
+  const { error } = await supabase.from('site_settings').update(data).eq('id', 1)
+  
+  if (error) {
+    console.error('Error updating site settings:', error)
+    throw new Error('Failed to update settings')
+  }
+
+  revalidatePath('/contact')
+  revalidatePath('/admin/settings')
+}
