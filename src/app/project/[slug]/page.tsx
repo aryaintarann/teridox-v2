@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { FadeIn } from "@/components/animations/fade-in";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import sanitizeHtml from 'sanitize-html';
 import { Metadata } from 'next';
 
@@ -66,15 +66,34 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <article className="container mx-auto px-4 md:px-6 py-16 max-w-4xl">
-        <Link href="/project" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 text-sm transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to projects
-        </Link>
-        
-        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">{project.title}</h1>
-            <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{project.category}</span>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-sm font-medium px-3 py-1 bg-surface-soft border border-border rounded-full">
+                {project.category}
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {new Date(project.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              </span>
+            </div>
+            
+            <h1 className="text-display-sm md:text-display-md font-bold mb-4">{project.title}</h1>
+            <p className="text-body-lg text-muted-foreground max-w-2xl">
+              {project.summary}
+            </p>
           </div>
+          
+          {project.preview_url && (
+            <a 
+              href={project.preview_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-foreground text-background font-medium rounded-sm hover:bg-foreground/90 transition-colors shrink-0"
+            >
+              Live Preview <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+        </div>
           <div className="flex flex-wrap gap-2">
             {project.tech_stack?.map((tech: string, i: number) => (
               <span key={i} className="bg-surface-soft border border-border px-3 py-1 rounded-sm text-xs font-medium">

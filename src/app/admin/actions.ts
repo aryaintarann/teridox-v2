@@ -22,6 +22,7 @@ export async function createProject(formData: FormData): Promise<void> {
     summary: formData.get('summary') as string,
     description: formData.get('description') as string,
     cover_image_url: formData.get('cover_image_url') as string,
+    preview_url: formData.get('preview_url') as string,
     tech_stack: techStack,
     status: formData.get('status') as string || 'draft',
   }
@@ -121,6 +122,7 @@ export async function updateProject(id: string, formData: FormData): Promise<voi
     summary: formData.get('summary') as string,
     description: formData.get('description') as string,
     cover_image_url: formData.get('cover_image_url') as string,
+    preview_url: formData.get('preview_url') as string,
     tech_stack: techStack,
     status: formData.get('status') as string || 'draft',
     updated_at: new Date().toISOString()

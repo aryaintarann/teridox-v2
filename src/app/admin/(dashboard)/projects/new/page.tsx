@@ -69,13 +69,25 @@ export default function NewProject() {
             <ImageUploader value={coverImage} onChange={setCoverImage} folder="projects" />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium block">Tech Stack (comma separated)</label>
-            <input 
-              name="tech_stack" 
-              className="w-full bg-background border border-border px-3 py-2 rounded-sm text-sm outline-none focus:border-foreground" 
-              placeholder="React, Next.js, Tailwind, Supabase"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium block">Tech Stack (comma separated)</label>
+              <input 
+                name="tech_stack" 
+                placeholder="Next.js, Tailwind, Supabase"
+                className="w-full bg-background border border-border px-3 py-2 rounded-sm text-sm outline-none focus:border-foreground" 
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium block">Live Preview URL (Optional)</label>
+              <input 
+                name="preview_url" 
+                type="url"
+                placeholder="https://..."
+                className="w-full bg-background border border-border px-3 py-2 rounded-sm text-sm outline-none focus:border-foreground" 
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
