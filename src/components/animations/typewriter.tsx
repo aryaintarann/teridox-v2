@@ -37,14 +37,22 @@ export function Typewriter({ text, className, delay = 0 }: TypewriterProps) {
   }, [text, hasStarted]);
 
   return (
-    <span className={className}>
-      {displayedText}
-      <motion.span
-        animate={{ opacity: [1, 0] }}
-        transition={{ duration: 0.8, repeat: Infinity }}
-        className="inline-block ml-[2px] w-[0.4em] h-[1em] bg-current align-middle"
-        style={{ marginBottom: "-0.1em" }}
-      />
+    <span className={`relative inline-block ${className || ""}`}>
+      {/* Invisible full text to reserve layout space and prevent CLS */}
+      <span className="invisible opacity-0 pointer-events-none break-words" aria-hidden="true">
+        {text}
+        <span className="inline-block ml-[2px] w-[0.4em] h-[1em] align-middle"></span>
+      </span>
+      {/* Absolute container for the typing animation */}
+      <span className="absolute top-0 left-0 w-full text-left">
+        {displayedText}
+        <motion.span
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+          className="inline-block ml-[2px] w-[0.4em] h-[1em] bg-current align-middle"
+          style={{ marginBottom: "-0.1em" }}
+        />
+      </span>
     </span>
   );
 }

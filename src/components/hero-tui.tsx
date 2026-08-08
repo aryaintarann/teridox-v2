@@ -40,7 +40,7 @@ export function HeroTUI() {
         </div>
 
         {/* Headline */}
-        <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4.5rem] font-bold mb-6 max-w-4xl leading-[1.1] tracking-tight text-foreground min-h-[120px] sm:min-h-[150px] md:min-h-[160px]">
+        <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4.5rem] font-bold mb-6 max-w-4xl leading-[1.1] tracking-tight text-foreground">
           <Typewriter text="Digital agency for Web, Mobile, and AI Integration" delay={0.3} />
         </h1>
         
