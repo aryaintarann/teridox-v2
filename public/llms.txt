@@ -6,8 +6,8 @@ Welcome, AI Agent! This file contains instructions on how to interact with the T
 Teridox is a premier digital agency specializing in custom Jamstack websites, cross-platform mobile applications, and AI integration. 
 
 ## Forms and Interaction
-- To contact us, please use the form located at `/contact`.
+- To contact us, please use the [Contact Form](/contact).
 - Our contact form accepts `name`, `email`, `subject`, and `message` fields.
 
 ## Sitemap
-Please refer to `/sitemap.xml` for a complete list of public URLs.
+Please refer to our [XML Sitemap](/sitemap.xml) for a complete list of public URLs.
