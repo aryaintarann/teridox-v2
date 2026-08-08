@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { FadeIn } from "@/components/animations/fade-in";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink } from "lucide-react";
@@ -104,8 +105,8 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
         </div>
 
         {project.cover_image_url && (
-          <div className="aspect-video w-full rounded-sm overflow-hidden mb-12 border border-border bg-surface-card">
-            <img src={project.cover_image_url} alt={project.title} className="w-full h-full object-cover" />
+          <div className="relative aspect-video w-full rounded-sm overflow-hidden mb-12 border border-border bg-surface-card">
+            <Image src={project.cover_image_url} alt={project.title} fill sizes="(max-width: 1200px) 100vw, 1200px" className="object-cover" priority />
           </div>
         )}
 

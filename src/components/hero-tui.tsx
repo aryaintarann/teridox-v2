@@ -33,7 +33,7 @@ export function HeroTUI() {
           </span>
           <span className="font-medium tracking-wide">
             Teridox Digital Solutions. Built for scale, speed, and reliability.{" "}
-            <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors ml-1">
+            <Link href="/contact" className="text-foreground underline underline-offset-4 hover:text-muted-foreground transition-colors ml-1">
               Contact us now
             </Link>
           </span>

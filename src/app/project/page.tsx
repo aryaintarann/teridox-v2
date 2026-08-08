@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FadeIn } from "@/components/animations/fade-in";
 import { createClient } from "@/lib/supabase/server";
 
@@ -31,7 +32,7 @@ export default async function Project() {
             <Link href={`/project/${project.slug}`} key={project.id} className="border border-border p-4 bg-surface-soft flex flex-col h-full rounded-sm hover:border-foreground/50 transition-colors cursor-pointer group">
               <div className="aspect-video bg-surface-card border border-border mb-4 flex items-center justify-center text-muted-foreground overflow-hidden relative">
                 {project.cover_image_url ? (
-                  <img src={project.cover_image_url} alt={project.title} className="w-full h-full object-cover" />
+                  <Image src={project.cover_image_url} alt={project.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 ) : (
                   <span>[ No Image ]</span>
                 )}

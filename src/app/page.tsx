@@ -1,4 +1,5 @@
 import { HeroTUI } from "@/components/hero-tui";
+import Image from "next/image";
 import Link from "next/link";
 import { FadeIn } from "@/components/animations/fade-in";
 import { createClient } from "@/lib/supabase/server";
@@ -118,7 +119,7 @@ export default async function Home() {
                 <Link href={`/project`} key={project.id} className="group cursor-pointer block">
                   <div className="w-full aspect-video bg-surface-card border border-border mb-4 overflow-hidden relative rounded-sm flex items-center justify-center">
                      {project.cover_image_url ? (
-                        <img src={project.cover_image_url} alt={project.title} className="w-full h-full object-cover" />
+                        <Image src={project.cover_image_url} alt={project.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                      ) : (
                         <span className="text-muted-foreground text-sm">[ No Image ]</span>
                      )}

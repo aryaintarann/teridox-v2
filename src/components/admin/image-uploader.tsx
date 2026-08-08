@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Upload, X, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -49,7 +50,7 @@ export function ImageUploader({
     <div className="w-full">
       {value ? (
         <div className="relative aspect-video rounded-sm overflow-hidden border border-border group bg-surface-soft">
-          <img src={value} alt="Uploaded preview" className="w-full h-full object-cover" />
+          <Image src={value} alt="Uploaded preview" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
           <div className="absolute inset-0 bg-background/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
             <button
               type="button"

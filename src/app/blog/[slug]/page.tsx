@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { FadeIn } from "@/components/animations/fade-in";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -84,8 +85,8 @@ export default async function BlogPost(props: { params: Promise<{ slug: string }
         </div>
 
         {post.cover_image_url && (
-          <div className="aspect-video w-full rounded-sm overflow-hidden mb-12 border border-border bg-surface-card">
-            <img src={post.cover_image_url} alt={post.title} className="w-full h-full object-cover" />
+          <div className="relative aspect-video w-full rounded-sm overflow-hidden mb-12 border border-border bg-surface-card">
+            <Image src={post.cover_image_url} alt={post.title} fill sizes="(max-width: 1200px) 100vw, 1200px" className="object-cover" priority />
           </div>
         )}
 
