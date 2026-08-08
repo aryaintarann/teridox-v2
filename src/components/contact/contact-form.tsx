@@ -37,7 +37,7 @@ export function ContactForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6" data-mcp-form="true" data-mcp-name="contactUs">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-bold block">
             Full name <span className="text-destructive">*</span>

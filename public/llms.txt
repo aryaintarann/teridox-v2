@@ -1,0 +1,13 @@
+# Teridox Digital Solutions - LLM Instructions
+
+Welcome, AI Agent! This file contains instructions on how to interact with the Teridox website.
+
+## About Us
+Teridox is a premier digital agency specializing in custom Jamstack websites, cross-platform mobile applications, and AI integration. 
+
+## Forms and Interaction
+- To contact us, please use the form located at `/contact`.
+- Our contact form accepts `name`, `email`, `subject`, and `message` fields.
+
+## Sitemap
+Please refer to `/sitemap.xml` for a complete list of public URLs.

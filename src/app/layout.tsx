@@ -62,6 +62,26 @@ const jsonLd = {
   ]
 };
 
+const mcpLd = {
+  mcpVersion: "1.0",
+  tools: [
+    {
+      name: "contactUs",
+      description: "Submit a message or inquiry to Teridox through the contact form.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          name: { type: "string", description: "The full name of the sender" },
+          email: { type: "string", description: "The email address of the sender" },
+          subject: { type: "string", description: "The subject of the message" },
+          message: { type: "string", description: "The content of the message" }
+        },
+        required: ["name", "email", "subject", "message"]
+      }
+    }
+  ]
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -80,6 +100,10 @@ export default function RootLayout({
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <script
+            type="application/mcp+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(mcpLd) }}
           />
           <main className="flex-1 flex flex-col">
             {children}
