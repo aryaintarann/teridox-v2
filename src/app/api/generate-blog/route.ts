@@ -1,11 +1,18 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import { createClient } from '@/lib/supabase/server';
 
 export async function POST(req: Request) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const { topic } = await req.json();
 
-    if (!topic) {
+    if (typeof topic !== 'string' || !topic.trim() || topic.length > 300) {
       return NextResponse.json({ error: 'Topic is required' }, { status: 400 });
     }
 
