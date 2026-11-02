@@ -67,7 +67,7 @@ export default async function BlogPost(props: { params: Promise<{ slug: string }
     <FadeIn delay={0.1}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\u003c") }}
       />
       <article className="container mx-auto px-4 md:px-6 py-16 max-w-4xl">
         <Link href="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 text-sm transition-colors">

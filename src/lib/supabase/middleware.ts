@@ -34,6 +34,7 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+  const isAdmin = user?.app_metadata?.role === 'admin'
 
   const isApiRoute = request.nextUrl.pathname.startsWith('/api')
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
@@ -41,7 +42,7 @@ export async function updateSession(request: NextRequest) {
 
   // Restrict access to /admin routes (except login)
   if (isAdminRoute && !isLoginRoute) {
-    if (!user) {
+    if (!isAdmin) {
       const url = request.nextUrl.clone()
       url.pathname = '/admin/login'
       return NextResponse.redirect(url)
@@ -49,7 +50,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Redirect authenticated users away from the login page
-  if (isLoginRoute && user) {
+  if (isLoginRoute && isAdmin) {
     const url = request.nextUrl.clone()
     url.pathname = '/admin'
     return NextResponse.redirect(url)

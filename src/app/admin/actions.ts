@@ -1,14 +1,33 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+
+const text = (f: FormData, k: string) => String(f.get(k) ?? '').trim()
+const reqTitle = (f: FormData) => { const v = text(f, 'title'); if (!v) throw new Error('Title is required'); return v }
+const status = (f: FormData) => (text(f, 'status') === 'published' ? 'published' : 'draft')
+const httpUrl = (f: FormData, k: string) => {
+  const v = text(f, k)
+  if (v && !/^https?:\/\//i.test(v)) throw new Error(`Invalid ${k}`)
+  return v
+}
+
+async function uniqueSlug(supabase: Awaited<ReturnType<typeof createClient>>, table: string, title: string) {
+  const base = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') || 'untitled'
+  const { data } = await supabase.from(table).select('slug').like('slug', `${base}%`)
+  const taken = new Set((data ?? []).map((r) => r.slug))
+  let slug = base
+  for (let n = 2; taken.has(slug); n++) slug = `${base}-${n}`
+  return slug
+}
 
 export async function createProject(formData: FormData): Promise<void> {
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized: You must be logged in to perform this action.')
+  await requireAdmin(supabase)
+  const title = reqTitle(formData)
 
   const techStackString = formData.get('tech_stack') as string
   const techStack = techStackString 
@@ -16,15 +35,15 @@ export async function createProject(formData: FormData): Promise<void> {
     : []
 
   const data = {
-    title: formData.get('title') as string,
-    slug: (formData.get('title') as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
-    category: formData.get('category') as string,
-    summary: formData.get('summary') as string,
-    description: formData.get('description') as string,
-    cover_image_url: formData.get('cover_image_url') as string,
-    preview_url: formData.get('preview_url') as string,
+    title,
+    slug: await uniqueSlug(supabase, 'projects', title),
+    category: text(formData, 'category'),
+    summary: text(formData, 'summary'),
+    description: text(formData, 'description'),
+    cover_image_url: httpUrl(formData, 'cover_image_url'),
+    preview_url: httpUrl(formData, 'preview_url'),
     tech_stack: techStack,
-    status: formData.get('status') as string || 'draft',
+    status: status(formData),
   }
 
   const { error } = await supabase.from('projects').insert([data])
@@ -43,18 +62,18 @@ export async function createProject(formData: FormData): Promise<void> {
 export async function createBlogPost(formData: FormData): Promise<void> {
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized: You must be logged in to perform this action.')
+  await requireAdmin(supabase)
+  const title = reqTitle(formData)
 
   const data = {
-    title: formData.get('title') as string,
-    slug: (formData.get('title') as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
-    category: formData.get('category') as string,
-    excerpt: formData.get('excerpt') as string,
-    content: formData.get('content') as string,
-    cover_image_url: formData.get('cover_image_url') as string,
-    status: formData.get('status') as string || 'draft',
-    published_at: formData.get('status') === 'published' ? new Date().toISOString() : null
+    title,
+    slug: await uniqueSlug(supabase, 'blog_posts', title),
+    category: text(formData, 'category'),
+    excerpt: text(formData, 'excerpt'),
+    content: text(formData, 'content'),
+    cover_image_url: httpUrl(formData, 'cover_image_url'),
+    status: status(formData),
+    published_at: status(formData) === 'published' ? new Date().toISOString() : null
   }
 
   const { error } = await supabase.from('blog_posts').insert([data])
@@ -73,8 +92,7 @@ export async function createBlogPost(formData: FormData): Promise<void> {
 export async function deleteProject(id: string): Promise<void> {
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAdmin(supabase)
 
   const { error } = await supabase.from('projects').delete().eq('id', id)
   if (error) {
@@ -90,8 +108,7 @@ export async function deleteProject(id: string): Promise<void> {
 export async function deleteBlogPost(id: string): Promise<void> {
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAdmin(supabase)
 
   const { error } = await supabase.from('blog_posts').delete().eq('id', id)
   if (error) {
@@ -107,8 +124,7 @@ export async function deleteBlogPost(id: string): Promise<void> {
 export async function updateProject(id: string, formData: FormData): Promise<void> {
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAdmin(supabase)
 
   const techStackString = formData.get('tech_stack') as string
   const techStack = techStackString 
@@ -116,15 +132,14 @@ export async function updateProject(id: string, formData: FormData): Promise<voi
     : []
 
   const data = {
-    title: formData.get('title') as string,
-    slug: (formData.get('title') as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
-    category: formData.get('category') as string,
-    summary: formData.get('summary') as string,
-    description: formData.get('description') as string,
-    cover_image_url: formData.get('cover_image_url') as string,
-    preview_url: formData.get('preview_url') as string,
+    title: reqTitle(formData),
+    category: text(formData, 'category'),
+    summary: text(formData, 'summary'),
+    description: text(formData, 'description'),
+    cover_image_url: httpUrl(formData, 'cover_image_url'),
+    preview_url: httpUrl(formData, 'preview_url'),
     tech_stack: techStack,
-    status: formData.get('status') as string || 'draft',
+    status: status(formData),
     updated_at: new Date().toISOString()
   }
 
@@ -143,21 +158,22 @@ export async function updateProject(id: string, formData: FormData): Promise<voi
 export async function updateBlogPost(id: string, formData: FormData): Promise<void> {
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAdmin(supabase)
 
   const data = {
-    title: formData.get('title') as string,
-    slug: (formData.get('title') as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
-    category: formData.get('category') as string,
-    excerpt: formData.get('excerpt') as string,
-    content: formData.get('content') as string,
-    cover_image_url: formData.get('cover_image_url') as string,
-    status: formData.get('status') as string || 'draft',
+    title: reqTitle(formData),
+    category: text(formData, 'category'),
+    excerpt: text(formData, 'excerpt'),
+    content: text(formData, 'content'),
+    cover_image_url: httpUrl(formData, 'cover_image_url'),
+    status: status(formData),
     updated_at: new Date().toISOString()
   }
 
   const { error } = await supabase.from('blog_posts').update(data).eq('id', id)
+  if (!error && data.status === 'published') {
+    await supabase.from('blog_posts').update({ published_at: new Date().toISOString() }).eq('id', id).is('published_at', null)
+  }
   if (error) {
     console.error('Error updating blog post:', error)
     throw new Error('Failed to update blog post')
@@ -172,8 +188,7 @@ export async function updateBlogPost(id: string, formData: FormData): Promise<vo
 export async function toggleTestimonialStatus(id: string, currentStatus: boolean): Promise<void> {
   const supabase = await createClient()
   
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized: You must be logged in to perform this action.')
+  await requireAdmin(supabase)
 
   const { error } = await supabase
     .from('testimonials')
@@ -192,15 +207,14 @@ export async function toggleTestimonialStatus(id: string, currentStatus: boolean
 export async function updateSiteSettings(formData: FormData): Promise<void> {
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireAdmin(supabase)
 
   const data = {
-    email: formData.get('email') as string,
-    whatsapp: formData.get('whatsapp') as string,
-    linkedin: formData.get('linkedin') as string,
-    instagram: formData.get('instagram') as string,
-    github: formData.get('github') as string,
+    email: text(formData, 'email'),
+    whatsapp: text(formData, 'whatsapp'),
+    linkedin: text(formData, 'linkedin'),
+    instagram: text(formData, 'instagram'),
+    github: text(formData, 'github'),
     updated_at: new Date().toISOString()
   }
 

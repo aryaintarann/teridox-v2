@@ -1,17 +1,17 @@
 # Graph Report - teridox-v2  (2026-11-02)
 
 ## Corpus Check
-- 62 files · ~21,310 words
+- 64 files · ~21,652 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 2 file(s) not represented in the graph (top: (none) 1, .css 1)
 
 ## Summary
-- 339 nodes · 590 edges · 26 communities (16 shown, 10 thin omitted)
+- 347 nodes · 634 edges · 27 communities (17 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `bf6bf45e`
+- Built from commit: `87075db2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -24,13 +24,13 @@
 - Runtime Dependencies
 - Theme & Root Layout
 - TypeScript Config
-- @tiptap/starter-kit
+- app/page.tsx
 - UI Primitives Deps
 - Dev Dependencies
 - ESLint Config
 - npm Scripts
 - phantom-ui
-- Supabase SSR
+- @google/generative-ai
 - PostCSS Config
 - DESIGN.md
 - Architecture — Website Company Profile Teridox
@@ -41,7 +41,8 @@
 - .claude/CLAUDE.md
 - @supabase/supabase-js@^2.112.2
 - tw-animate-css@^1.4.0
-- @types/sanitize-html@^2.16.1
+- shadcn@^4.16.1
+- @tiptap/extension-image
 
 ## God Nodes (most connected - your core abstractions)
 1. `createClient()` - 48 edges
@@ -52,37 +53,37 @@
 6. `compilerOptions` - 16 edges
 7. `Architecture — Website Company Profile Teridox` - 15 edges
 8. `PRD — Website Company Profile Teridox` - 13 edges
-9. `ImageUploader()` - 10 edges
-10. `RichTextEditor()` - 10 edges
+9. `requireAdmin()` - 11 edges
+10. `ImageUploader()` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `8. Dark/Light Mode` --references--> `ThemeProvider()`  [INFERRED]
   ARCHITECTURE.md → src/components/theme-provider.tsx
+- `generateMetadata()` --calls--> `createClient()`  [EXTRACTED]
+  src/app/blog/[slug]/page.tsx → src/lib/supabase/server.ts
+- `generateMetadata()` --calls--> `createClient()`  [EXTRACTED]
+  src/app/project/[slug]/page.tsx → src/lib/supabase/server.ts
 - `About()` --calls--> `FadeIn()`  [EXTRACTED]
   src/app/about/page.tsx → src/components/animations/fade-in.tsx
 - `AdminBlog()` --calls--> `createClient()`  [EXTRACTED]
   src/app/admin/(dashboard)/blog/page.tsx → src/lib/supabase/server.ts
-- `AdminInbox()` --calls--> `createClient()`  [EXTRACTED]
-  src/app/admin/(dashboard)/inbox/page.tsx → src/lib/supabase/server.ts
-- `AdminDashboard()` --calls--> `createClient()`  [EXTRACTED]
-  src/app/admin/(dashboard)/page.tsx → src/lib/supabase/server.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (26 total, 10 thin omitted)
+## Communities (27 total, 10 thin omitted)
 
 ### Community 0 - "Admin Server Actions"
-Cohesion: 0.10
-Nodes (27): nextConfig, lucide-react, next, sanitize-html, createBlogPost(), createProject(), deleteBlogPost(), deleteProject() (+19 more)
+Cohesion: 0.12
+Nodes (28): nextConfig, next, createBlogPost(), createProject(), deleteBlogPost(), deleteProject(), httpUrl(), reqTitle() (+20 more)
 
 ### Community 1 - "Public Pages"
-Cohesion: 0.12
-Nodes (21): framer-motion@^13.0.0, framer-motion, react, About(), Blog(), revalidate, submitContactForm(), Contact() (+13 more)
+Cohesion: 0.11
+Nodes (19): sanitize-html@^2.17.6, sanitize-html, About(), Blog(), revalidate, BlogPost(), generateMetadata(), submitContactForm() (+11 more)
 
 ### Community 2 - "Admin Editors & React"
-Cohesion: 0.32
-Nodes (12): react-dom, EditBlogPost(), SubmitButton(), NewBlogPost(), SubmitButton(), EditProject(), SubmitButton(), NewProject() (+4 more)
+Cohesion: 0.28
+Nodes (14): lucide-react, react, react-dom, EditBlogPost(), SubmitButton(), NewBlogPost(), SubmitButton(), EditProject() (+6 more)
 
 ### Community 3 - "shadcn Config"
 Cohesion: 0.09
@@ -94,15 +95,19 @@ Nodes (3): updateSession(), config, proxy()
 
 ### Community 5 - "Runtime Dependencies"
 Cohesion: 0.11
-Nodes (18): dependencies, gooey-toast@^0.2.2, @google/generative-ai@^0.24.1, lucide-react@^1.28.0, next@16.3.0, react@19.2.8, react-dom@19.2.8, sanitize-html@^2.17.6 (+10 more)
+Nodes (19): dependencies, framer-motion@^13.0.0, gooey-toast@^0.2.2, lucide-react@^1.28.0, next@16.3.0, react@19.2.8, react-dom@19.2.8, @supabase/ssr@^0.12.4 (+11 more)
 
 ### Community 6 - "Theme & Root Layout"
-Cohesion: 0.17
-Nodes (12): next-themes@^0.4.6, next-themes, jetbrainsMono, jsonLd, mcpLd, metadata, RootLayout(), Footer() (+4 more)
+Cohesion: 0.16
+Nodes (13): 8. Dark/Light Mode, next-themes@^0.4.6, next-themes, jetbrainsMono, jsonLd, mcpLd, metadata, RootLayout() (+5 more)
 
 ### Community 7 - "TypeScript Config"
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+10 more)
+
+### Community 8 - "app/page.tsx"
+Cohesion: 0.39
+Nodes (5): Home(), revalidate, Typewriter(), TypewriterProps, HeroTUI()
 
 ### Community 9 - "UI Primitives Deps"
 Cohesion: 0.19
@@ -126,7 +131,7 @@ Nodes (38): Badges & Chips, Border Radius Scale, Brand & Accent, Breakpoints, Bu
 
 ### Community 17 - "Architecture — Website Company Profile Teridox"
 Cohesion: 0.08
-Nodes (25): 10. Media & Storage, 11. Deployment & CI/CD, 12. Keamanan, 13. Performance, 14. Rangkuman Keputusan Arsitektur Utama, 1. Gambaran Arsitektur, 2. Tech Stack & Rationale, 3. Struktur Folder (Next.js App Router) (+17 more)
+Nodes (24): 10. Media & Storage, 11. Deployment & CI/CD, 12. Keamanan, 13. Performance, 14. Rangkuman Keputusan Arsitektur Utama, 1. Gambaran Arsitektur, 2. Tech Stack & Rationale, 3. Struktur Folder (Next.js App Router) (+16 more)
 
 ### Community 18 - "PRD — Website Company Profile Teridox"
 Cohesion: 0.08
@@ -142,17 +147,17 @@ Nodes (3): Deploy on Vercel, Getting Started, Learn More
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `next` connect `Admin Server Actions` to `Public Pages`, `Admin Editors & React`, `middleware.ts`, `Runtime Dependencies`, `Theme & Root Layout`, `Dev Dependencies`?**
-  _High betweenness centrality (0.159) - this node is a cross-community bridge._
+- **Why does `next` connect `Admin Server Actions` to `Public Pages`, `Admin Editors & React`, `middleware.ts`, `Runtime Dependencies`, `Theme & Root Layout`, `app/page.tsx`, `Dev Dependencies`?**
+  _High betweenness centrality (0.165) - this node is a cross-community bridge._
 - **Should `Admin Server Actions` be split into smaller, more focused modules?**
-  _Cohesion score 0.09840425531914894 - nodes in this community are weakly interconnected._
-- **Why does `ThemeProvider()` connect `Theme & Root Layout` to `Architecture — Website Company Profile Teridox`?**
-  _High betweenness centrality (0.090) - this node is a cross-community bridge._
+  _Cohesion score 0.12270531400966184 - nodes in this community are weakly interconnected._
+- **Why does `Architecture — Website Company Profile Teridox` connect `Architecture — Website Company Profile Teridox` to `Theme & Root Layout`?**
+  _High betweenness centrality (0.087) - this node is a cross-community bridge._
 - **Should `Public Pages` be split into smaller, more focused modules?**
-  _Cohesion score 0.11942959001782531 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11397849462365592 - nodes in this community are weakly interconnected._
 - **Should `shadcn Config` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Runtime Dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
 - **Should `TypeScript Config` be split into smaller, more focused modules?**
   _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._

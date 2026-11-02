@@ -1,1 +1,15 @@
-{"0": "Admin Server Actions", "1": "Public Pages", "2": "Admin Editors & React", "3": "shadcn Config", "4": "Next Config & Blog API", "5": "Runtime Dependencies", "6": "Theme & Root Layout", "7": "TypeScript Config", "8": "Package Manifest", "9": "UI Primitives Deps", "10": "Dev Dependencies", "11": "ESLint Config", "12": "npm Scripts", "13": "phantom-ui", "14": "Supabase SSR", "15": "PostCSS Config"}
+{
+  "0": "Admin Server Actions",
+  "1": "Public Pages",
+  "2": "Admin Editors & React",
+  "3": "shadcn Config",
+  "5": "Runtime Dependencies",
+  "6": "Theme & Root Layout",
+  "7": "TypeScript Config",
+  "9": "UI Primitives Deps",
+  "10": "Dev Dependencies",
+  "11": "ESLint Config",
+  "12": "npm Scripts",
+  "13": "phantom-ui",
+  "15": "PostCSS Config"
+}
