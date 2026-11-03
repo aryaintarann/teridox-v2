@@ -1,12 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import { getAdmin } from '@/lib/auth'
 import { LayoutDashboard, FileText, Briefcase, MessageSquare, Users, LogOut, Settings } from 'lucide-react'
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  // Second check behind proxy.ts; pages also depend on RLS for reads.
+  if (!(await getAdmin(await createClient()))) redirect('/admin/login')
+
   return (
     <div className="flex h-screen bg-background">
       {/* Sidebar */}

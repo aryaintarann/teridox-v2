@@ -36,7 +36,6 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser()
   const isAdmin = user?.app_metadata?.role === 'admin'
 
-  const isApiRoute = request.nextUrl.pathname.startsWith('/api')
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
   const isLoginRoute = request.nextUrl.pathname === '/admin/login'
 

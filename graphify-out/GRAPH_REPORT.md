@@ -1,17 +1,17 @@
 # Graph Report - teridox-v2  (2026-11-02)
 
 ## Corpus Check
-- 64 files · ~21,652 words
+- 64 files · ~21,683 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 2 file(s) not represented in the graph (top: (none) 1, .css 1)
 
 ## Summary
-- 347 nodes · 634 edges · 27 communities (17 shown, 10 thin omitted)
+- 347 nodes · 640 edges · 27 communities (17 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `87075db2`
+- Built from commit: `4591eab7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -45,7 +45,7 @@
 - @tiptap/extension-image
 
 ## God Nodes (most connected - your core abstractions)
-1. `createClient()` - 48 edges
+1. `createClient()` - 50 edges
 2. `next` - 32 edges
 3. `react` - 24 edges
 4. `FadeIn()` - 19 edges
@@ -75,14 +75,14 @@
 
 ### Community 0 - "Admin Server Actions"
 Cohesion: 0.12
-Nodes (28): nextConfig, next, createBlogPost(), createProject(), deleteBlogPost(), deleteProject(), httpUrl(), reqTitle() (+20 more)
+Nodes (29): nextConfig, next, createBlogPost(), createProject(), deleteBlogPost(), deleteProject(), httpUrl(), reqTitle() (+21 more)
 
 ### Community 1 - "Public Pages"
 Cohesion: 0.11
 Nodes (19): sanitize-html@^2.17.6, sanitize-html, About(), Blog(), revalidate, BlogPost(), generateMetadata(), submitContactForm() (+11 more)
 
 ### Community 2 - "Admin Editors & React"
-Cohesion: 0.28
+Cohesion: 0.32
 Nodes (14): lucide-react, react, react-dom, EditBlogPost(), SubmitButton(), NewBlogPost(), SubmitButton(), EditProject() (+6 more)
 
 ### Community 3 - "shadcn Config"
@@ -148,9 +148,9 @@ Nodes (3): Deploy on Vercel, Getting Started, Learn More
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `next` connect `Admin Server Actions` to `Public Pages`, `Admin Editors & React`, `middleware.ts`, `Runtime Dependencies`, `Theme & Root Layout`, `app/page.tsx`, `Dev Dependencies`?**
-  _High betweenness centrality (0.165) - this node is a cross-community bridge._
+  _High betweenness centrality (0.163) - this node is a cross-community bridge._
 - **Should `Admin Server Actions` be split into smaller, more focused modules?**
-  _Cohesion score 0.12270531400966184 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1196808510638298 - nodes in this community are weakly interconnected._
 - **Why does `Architecture — Website Company Profile Teridox` connect `Architecture — Website Company Profile Teridox` to `Theme & Root Layout`?**
   _High betweenness centrality (0.087) - this node is a cross-community bridge._
 - **Should `Public Pages` be split into smaller, more focused modules?**

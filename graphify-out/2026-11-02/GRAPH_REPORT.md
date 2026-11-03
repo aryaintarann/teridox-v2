@@ -1,12 +1,12 @@
 # Graph Report - teridox-v2  (2026-11-02)
 
 ## Corpus Check
-- 64 files · ~21,565 words
+- 64 files · ~21,652 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 2 file(s) not represented in the graph (top: (none) 1, .css 1)
 
 ## Summary
-- 342 nodes · 607 edges · 27 communities (17 shown, 10 thin omitted)
+- 347 nodes · 634 edges · 27 communities (17 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
@@ -24,13 +24,13 @@
 - Runtime Dependencies
 - Theme & Root Layout
 - TypeScript Config
-- contact/page.tsx
+- app/page.tsx
 - UI Primitives Deps
 - Dev Dependencies
 - ESLint Config
 - npm Scripts
 - phantom-ui
-- sanitize-html
+- @google/generative-ai
 - PostCSS Config
 - DESIGN.md
 - Architecture — Website Company Profile Teridox
@@ -59,14 +59,14 @@
 ## Surprising Connections (you probably didn't know these)
 - `8. Dark/Light Mode` --references--> `ThemeProvider()`  [INFERRED]
   ARCHITECTURE.md → src/components/theme-provider.tsx
+- `generateMetadata()` --calls--> `createClient()`  [EXTRACTED]
+  src/app/blog/[slug]/page.tsx → src/lib/supabase/server.ts
+- `generateMetadata()` --calls--> `createClient()`  [EXTRACTED]
+  src/app/project/[slug]/page.tsx → src/lib/supabase/server.ts
 - `About()` --calls--> `FadeIn()`  [EXTRACTED]
   src/app/about/page.tsx → src/components/animations/fade-in.tsx
 - `AdminBlog()` --calls--> `createClient()`  [EXTRACTED]
   src/app/admin/(dashboard)/blog/page.tsx → src/lib/supabase/server.ts
-- `AdminInbox()` --calls--> `createClient()`  [EXTRACTED]
-  src/app/admin/(dashboard)/inbox/page.tsx → src/lib/supabase/server.ts
-- `AdminDashboard()` --calls--> `createClient()`  [EXTRACTED]
-  src/app/admin/(dashboard)/page.tsx → src/lib/supabase/server.ts
 
 ## Import Cycles
 - None detected.
@@ -74,12 +74,12 @@
 ## Communities (27 total, 10 thin omitted)
 
 ### Community 0 - "Admin Server Actions"
-Cohesion: 0.11
-Nodes (27): nextConfig, next, createBlogPost(), createProject(), deleteBlogPost(), deleteProject(), toggleTestimonialStatus(), updateBlogPost() (+19 more)
+Cohesion: 0.12
+Nodes (28): nextConfig, next, createBlogPost(), createProject(), deleteBlogPost(), deleteProject(), httpUrl(), reqTitle() (+20 more)
 
 ### Community 1 - "Public Pages"
-Cohesion: 0.13
-Nodes (17): framer-motion@^13.0.0, framer-motion, About(), Blog(), revalidate, Home(), revalidate, Project() (+9 more)
+Cohesion: 0.11
+Nodes (19): sanitize-html@^2.17.6, sanitize-html, About(), Blog(), revalidate, BlogPost(), generateMetadata(), submitContactForm() (+11 more)
 
 ### Community 2 - "Admin Editors & React"
 Cohesion: 0.28
@@ -95,7 +95,7 @@ Nodes (3): updateSession(), config, proxy()
 
 ### Community 5 - "Runtime Dependencies"
 Cohesion: 0.11
-Nodes (19): dependencies, gooey-toast@^0.2.2, @google/generative-ai@^0.24.1, lucide-react@^1.28.0, next@16.3.0, react@19.2.8, react-dom@19.2.8, @supabase/ssr@^0.12.4 (+11 more)
+Nodes (19): dependencies, framer-motion@^13.0.0, gooey-toast@^0.2.2, lucide-react@^1.28.0, next@16.3.0, react@19.2.8, react-dom@19.2.8, @supabase/ssr@^0.12.4 (+11 more)
 
 ### Community 6 - "Theme & Root Layout"
 Cohesion: 0.16
@@ -105,9 +105,9 @@ Nodes (13): 8. Dark/Light Mode, next-themes@^0.4.6, next-themes, jetbrainsMono, 
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+10 more)
 
-### Community 8 - "contact/page.tsx"
-Cohesion: 0.60
-Nodes (3): submitContactForm(), Contact(), ContactForm()
+### Community 8 - "app/page.tsx"
+Cohesion: 0.39
+Nodes (5): Home(), revalidate, Typewriter(), TypewriterProps, HeroTUI()
 
 ### Community 9 - "UI Primitives Deps"
 Cohesion: 0.19
@@ -147,14 +147,14 @@ Nodes (3): Deploy on Vercel, Getting Started, Learn More
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `next` connect `Admin Server Actions` to `Public Pages`, `Admin Editors & React`, `middleware.ts`, `Runtime Dependencies`, `Theme & Root Layout`, `Dev Dependencies`?**
-  _High betweenness centrality (0.160) - this node is a cross-community bridge._
+- **Why does `next` connect `Admin Server Actions` to `Public Pages`, `Admin Editors & React`, `middleware.ts`, `Runtime Dependencies`, `Theme & Root Layout`, `app/page.tsx`, `Dev Dependencies`?**
+  _High betweenness centrality (0.165) - this node is a cross-community bridge._
 - **Should `Admin Server Actions` be split into smaller, more focused modules?**
-  _Cohesion score 0.10545790934320073 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.12270531400966184 - nodes in this community are weakly interconnected._
 - **Why does `Architecture — Website Company Profile Teridox` connect `Architecture — Website Company Profile Teridox` to `Theme & Root Layout`?**
   _High betweenness centrality (0.087) - this node is a cross-community bridge._
 - **Should `Public Pages` be split into smaller, more focused modules?**
-  _Cohesion score 0.1282051282051282 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11397849462365592 - nodes in this community are weakly interconnected._
 - **Should `shadcn Config` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `Runtime Dependencies` be split into smaller, more focused modules?**

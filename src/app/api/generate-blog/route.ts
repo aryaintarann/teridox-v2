@@ -86,7 +86,7 @@ Mandatory Instructions:
     }
 
     if (!blogData) {
-      return NextResponse.json({ error: 'Gemini 3 Flash failed to generate valid data. Error: ' + lastError }, { status: 500 });
+      return NextResponse.json({ error: "Failed to generate a valid article. Please try again." }, { status: 500 });
     }
 
     return NextResponse.json({
@@ -98,6 +98,6 @@ Mandatory Instructions:
     });
   } catch (error: any) {
     console.error("Generate Blog Error:", error);
-    return NextResponse.json({ error: error.message || 'An unexpected error occurred' }, { status: 500 });
+    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
   }
 }
