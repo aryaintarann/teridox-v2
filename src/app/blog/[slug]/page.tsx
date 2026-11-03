@@ -10,7 +10,7 @@ import { Metadata } from 'next';
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
   const supabase = await createClient();
-  const { data: post } = await supabase.from("blog_posts").select("*").eq("slug", params.slug).single();
+  const { data: post } = await supabase.from("blog_posts").select("*").eq("slug", params.slug).eq("status", "published").single();
 
   if (!post) return { title: 'Post Not Found' };
 
@@ -42,6 +42,7 @@ export default async function BlogPost(props: { params: Promise<{ slug: string }
     .from("blog_posts")
     .select("*")
     .eq("slug", params.slug)
+    .eq("status", "published")
     .single();
 
   if (!post) {
