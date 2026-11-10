@@ -1,36 +1,36 @@
-# Graph Report - teridox-v2  (2026-11-02)
+# Graph Report - teridox-v2  (2026-11-11)
 
 ## Corpus Check
-- 64 files · ~21,683 words
+- 72 files · ~21,931 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 2 file(s) not represented in the graph (top: (none) 1, .css 1)
+- Unclassified: 4 file(s) not represented in the graph (top: .glb 2, (none) 1, .css 1)
 
 ## Summary
-- 347 nodes · 640 edges · 27 communities (17 shown, 10 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.95)
+- 366 nodes · 778 edges · 28 communities (20 shown, 8 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 12 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4591eab7`
+- Built from commit: `c0ac916c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - Admin Server Actions
-- Public Pages
+- CtaBand
 - Admin Editors & React
 - shadcn Config
 - middleware.ts
-- Runtime Dependencies
+- dependencies
 - Theme & Root Layout
 - TypeScript Config
-- app/page.tsx
-- UI Primitives Deps
+- testimonial/page.tsx
+- button.tsx
 - Dev Dependencies
 - ESLint Config
 - npm Scripts
-- phantom-ui
-- @google/generative-ai
+- contact/page.tsx
+- logo-hero.tsx
 - PostCSS Config
 - DESIGN.md
 - Architecture — Website Company Profile Teridox
@@ -39,47 +39,48 @@
 - AGENTS.md
 - CLAUDE.md
 - .claude/CLAUDE.md
-- @supabase/supabase-js@^2.112.2
-- tw-animate-css@^1.4.0
-- shadcn@^4.16.1
+- phantom-ui@^0.1.0
+- @tailwindcss/typography@^0.5.20
 - @tiptap/extension-image
+- @supabase/ssr
+- tailwind-merge
 
 ## God Nodes (most connected - your core abstractions)
-1. `createClient()` - 50 edges
-2. `next` - 32 edges
-3. `react` - 24 edges
-4. `FadeIn()` - 19 edges
-5. `lucide-react` - 17 edges
-6. `compilerOptions` - 16 edges
-7. `Architecture — Website Company Profile Teridox` - 15 edges
-8. `PRD — Website Company Profile Teridox` - 13 edges
-9. `requireAdmin()` - 11 edges
-10. `ImageUploader()` - 10 edges
+1. `createClient()` - 52 edges
+2. `next` - 38 edges
+3. `Reveal()` - 25 edges
+4. `react` - 22 edges
+5. `RevealText()` - 18 edges
+6. `lucide-react` - 16 edges
+7. `RevealLink()` - 16 edges
+8. `compilerOptions` - 16 edges
+9. `Architecture — Website Company Profile Teridox` - 15 edges
+10. `CtaBand()` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `8. Dark/Light Mode` --references--> `ThemeProvider()`  [INFERRED]
-  ARCHITECTURE.md → src/components/theme-provider.tsx
-- `generateMetadata()` --calls--> `createClient()`  [EXTRACTED]
-  src/app/blog/[slug]/page.tsx → src/lib/supabase/server.ts
-- `generateMetadata()` --calls--> `createClient()`  [EXTRACTED]
-  src/app/project/[slug]/page.tsx → src/lib/supabase/server.ts
-- `About()` --calls--> `FadeIn()`  [EXTRACTED]
-  src/app/about/page.tsx → src/components/animations/fade-in.tsx
-- `AdminBlog()` --calls--> `createClient()`  [EXTRACTED]
-  src/app/admin/(dashboard)/blog/page.tsx → src/lib/supabase/server.ts
+- `4.2 Tabel `services`` --references--> `Services`  [INFERRED]
+  ARCHITECTURE.md → src/app/services/page.tsx
+- `4.7 Row Level Security (RLS)` --references--> `Services`  [INFERRED]
+  ARCHITECTURE.md → src/app/services/page.tsx
+- `Components` --references--> `ContactForm()`  [INFERRED]
+  DESIGN.md → src/components/contact/contact-form.tsx
+- `Components` --references--> `Footer()`  [INFERRED]
+  DESIGN.md → src/components/shared/footer.tsx
+- `Components` --references--> `Navbar()`  [INFERRED]
+  DESIGN.md → src/components/shared/navbar.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (27 total, 10 thin omitted)
+## Communities (28 total, 8 thin omitted)
 
 ### Community 0 - "Admin Server Actions"
-Cohesion: 0.12
-Nodes (29): nextConfig, next, createBlogPost(), createProject(), deleteBlogPost(), deleteProject(), httpUrl(), reqTitle() (+21 more)
-
-### Community 1 - "Public Pages"
 Cohesion: 0.11
-Nodes (19): sanitize-html@^2.17.6, sanitize-html, About(), Blog(), revalidate, BlogPost(), generateMetadata(), submitContactForm() (+11 more)
+Nodes (31): nextConfig, next, createBlogPost(), createProject(), deleteBlogPost(), deleteProject(), httpUrl(), reqTitle() (+23 more)
+
+### Community 1 - "CtaBand"
+Cohesion: 0.13
+Nodes (34): Components, Motion, sanitize-html, About(), delivery, metadata, values, Blog() (+26 more)
 
 ### Community 2 - "Admin Editors & React"
 Cohesion: 0.32
@@ -93,29 +94,29 @@ Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent 
 Cohesion: 0.47
 Nodes (3): updateSession(), config, proxy()
 
-### Community 5 - "Runtime Dependencies"
-Cohesion: 0.11
-Nodes (19): dependencies, framer-motion@^13.0.0, gooey-toast@^0.2.2, lucide-react@^1.28.0, next@16.3.0, react@19.2.8, react-dom@19.2.8, @supabase/ssr@^0.12.4 (+11 more)
+### Community 5 - "dependencies"
+Cohesion: 0.09
+Nodes (22): dependencies, clsx@^2.1.1, gooey-toast@^0.2.2, @google/generative-ai@^0.24.1, lucide-react@^1.28.0, next@16.3.0, react@19.2.8, react-dom@19.2.8 (+14 more)
 
 ### Community 6 - "Theme & Root Layout"
-Cohesion: 0.16
-Nodes (13): 8. Dark/Light Mode, next-themes@^0.4.6, next-themes, jetbrainsMono, jsonLd, mcpLd, metadata, RootLayout() (+5 more)
+Cohesion: 0.14
+Nodes (15): jakarta, jsonLd, mcpLd, metadata, RootLayout(), AmbientLight(), MotionProvider(), ScrollProgress() (+7 more)
 
 ### Community 7 - "TypeScript Config"
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+10 more)
 
-### Community 8 - "app/page.tsx"
-Cohesion: 0.39
-Nodes (5): Home(), revalidate, Typewriter(), TypewriterProps, HeroTUI()
+### Community 8 - "testimonial/page.tsx"
+Cohesion: 0.16
+Nodes (10): motion@^14.12.0, motion, submitTestimonial(), TestimonialPage(), FadeIn(), FadeInProps, Typewriter(), TypewriterProps (+2 more)
 
-### Community 9 - "UI Primitives Deps"
-Cohesion: 0.19
-Nodes (11): @base-ui/react@^1.7.0, class-variance-authority@^0.7.1, clsx@^2.1.1, tailwind-merge@^3.6.0, @base-ui/react, class-variance-authority, clsx, tailwind-merge (+3 more)
+### Community 9 - "button.tsx"
+Cohesion: 0.32
+Nodes (7): @base-ui/react@^1.7.0, class-variance-authority@^0.7.1, @base-ui/react, class-variance-authority, Button(), buttonVariants, cn()
 
 ### Community 10 - "Dev Dependencies"
-Cohesion: 0.16
-Nodes (16): devDependencies, tailwindcss@^4, @tailwindcss/postcss@^4, @types/node@^20, @types/react@^19, @types/react-dom@^19, typescript@^5, name (+8 more)
+Cohesion: 0.15
+Nodes (18): devDependencies, tailwindcss@^4, @tailwindcss/postcss@^4, @types/node@^20, @types/react@^19, @types/react-dom@^19, @types/three@^0.187.0, typescript@^5 (+10 more)
 
 ### Community 11 - "ESLint Config"
 Cohesion: 0.33
@@ -125,13 +126,21 @@ Nodes (5): eslintConfig, eslint@^9, eslint-config-next@16.3.0, eslint, eslint-co
 Cohesion: 0.40
 Nodes (5): scripts, build, dev, lint, start
 
+### Community 13 - "contact/page.tsx"
+Cohesion: 0.39
+Nodes (5): submitContactForm(), Contact(), metadata, ContactForm(), interests
+
+### Community 14 - "logo-hero.tsx"
+Cohesion: 0.24
+Nodes (8): next-themes@^0.4.6, three@^0.187.0, next-themes, three, HREF, PartId, PARTS, LogoLockup()
+
 ### Community 16 - "DESIGN.md"
-Cohesion: 0.05
-Nodes (38): Badges & Chips, Border Radius Scale, Brand & Accent, Breakpoints, Buttons, Cards & Containers, Collapsing Strategy, Colors (+30 more)
+Cohesion: 0.22
+Nodes (8): Colors, Content rules, Copy, Overview, Responsive, Shape, Surfaces, Typography
 
 ### Community 17 - "Architecture — Website Company Profile Teridox"
 Cohesion: 0.08
-Nodes (24): 10. Media & Storage, 11. Deployment & CI/CD, 12. Keamanan, 13. Performance, 14. Rangkuman Keputusan Arsitektur Utama, 1. Gambaran Arsitektur, 2. Tech Stack & Rationale, 3. Struktur Folder (Next.js App Router) (+16 more)
+Nodes (25): 10. Media & Storage, 11. Deployment & CI/CD, 12. Keamanan, 13. Performance, 14. Rangkuman Keputusan Arsitektur Utama, 1. Gambaran Arsitektur, 2. Tech Stack & Rationale, 3. Struktur Folder (Next.js App Router) (+17 more)
 
 ### Community 18 - "PRD — Website Company Profile Teridox"
 Cohesion: 0.08
@@ -141,23 +150,27 @@ Nodes (23): 10. Asumsi & Risiko, 11. Milestone (Usulan Fase Pengerjaan), 12. Met
 Cohesion: 0.50
 Nodes (3): Deploy on Vercel, Getting Started, Learn More
 
+### Community 25 - "@tiptap/extension-image"
+Cohesion: 0.33
+Nodes (4): shadcn@^4.16.1, @tiptap/extension-image@^3.29.2, shadcn, @tiptap/extension-image
+
 ## Knowledge Gaps
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `next` connect `Admin Server Actions` to `Public Pages`, `Admin Editors & React`, `middleware.ts`, `Runtime Dependencies`, `Theme & Root Layout`, `app/page.tsx`, `Dev Dependencies`?**
-  _High betweenness centrality (0.163) - this node is a cross-community bridge._
+- **Why does `next` connect `Admin Server Actions` to `CtaBand`, `Admin Editors & React`, `middleware.ts`, `dependencies`, `Theme & Root Layout`, `testimonial/page.tsx`, `Dev Dependencies`, `contact/page.tsx`, `logo-hero.tsx`?**
+  _High betweenness centrality (0.209) - this node is a cross-community bridge._
 - **Should `Admin Server Actions` be split into smaller, more focused modules?**
-  _Cohesion score 0.1196808510638298 - nodes in this community are weakly interconnected._
-- **Why does `Architecture — Website Company Profile Teridox` connect `Architecture — Website Company Profile Teridox` to `Theme & Root Layout`?**
-  _High betweenness centrality (0.087) - this node is a cross-community bridge._
-- **Should `Public Pages` be split into smaller, more focused modules?**
-  _Cohesion score 0.11397849462365592 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11183673469387755 - nodes in this community are weakly interconnected._
+- **Why does `createClient()` connect `Admin Server Actions` to `testimonial/page.tsx`, `CtaBand`, `contact/page.tsx`?**
+  _High betweenness centrality (0.083) - this node is a cross-community bridge._
+- **Should `CtaBand` be split into smaller, more focused modules?**
+  _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
+- **Why does `react` connect `Admin Editors & React` to `Admin Server Actions`, `CtaBand`, `dependencies`, `Theme & Root Layout`, `testimonial/page.tsx`, `Dev Dependencies`, `contact/page.tsx`, `logo-hero.tsx`?**
+  _High betweenness centrality (0.072) - this node is a cross-community bridge._
 - **Should `shadcn Config` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
-- **Should `Runtime Dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
-- **Should `TypeScript Config` be split into smaller, more focused modules?**
-  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
+- **Should `dependencies` be split into smaller, more focused modules?**
+  _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._

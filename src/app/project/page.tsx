@@ -1,9 +1,11 @@
-import React from "react";
-import Link from "next/link";
+import type { Metadata } from "next";
 import Image from "next/image";
-import { FadeIn } from "@/components/animations/fade-in";
+import { Reveal, RevealLink } from "@/components/motion/reveal";
+import { CtaBand } from "@/components/shared/cta-band";
+import { PageIntro } from "@/components/shared/page-intro";
 import { createClient } from "@/lib/supabase/server";
 
+export const metadata: Metadata = { title: "Projects" };
 export const revalidate = 60; // ISR every 60s
 
 export default async function Project() {
@@ -15,50 +17,60 @@ export default async function Project() {
     .order("created_at", { ascending: false });
 
   return (
-    <FadeIn delay={0.1}>
-    <div className="container mx-auto px-4 md:px-6 py-16 max-w-5xl">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-        <h1 className="text-display-xl font-bold">Projects</h1>
-        <div className="flex gap-4 border-b border-border w-full md:w-auto pb-2">
-          <button className="text-body-md font-bold text-foreground border-b-2 border-foreground pb-2 -mb-[10px]">
-            All
-          </button>
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+    <>
+      <PageIntro title="Work we have shipped.">Builds for clients and our own products.</PageIntro>
+
+      <section aria-label="Project list" className="wrap pb-[104px]">
         {projects && projects.length > 0 ? (
-          projects.map((project: any) => (
-            <Link href={`/project/${project.slug}`} key={project.id} className="border border-border p-4 bg-surface-soft flex flex-col h-full rounded-sm hover:border-foreground/50 transition-colors cursor-pointer group">
-              <div className="aspect-video bg-surface-card border border-border mb-4 flex items-center justify-center text-muted-foreground overflow-hidden relative">
-                {project.cover_image_url ? (
-                  <Image src={project.cover_image_url} alt={project.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
-                ) : (
-                  <span>[ No Image ]</span>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-5">
+            {projects.map((project, i) => (
+              // Staggered by column, so a row lands left to right and later rows start fresh.
+              <RevealLink
+                key={project.id}
+                delay={(i % 3) * 0.09}
+                href={`/project/${project.slug}`}
+                className="card flex flex-col gap-3 p-3 pb-7"
+              >
+                <span className="relative block aspect-[16/10] overflow-hidden rounded-[18px] bg-tint">
+                  {project.cover_image_url ? (
+                    <Image
+                      src={project.cover_image_url}
+                      alt=""
+                      fill
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <span className="absolute inset-0 grid place-items-center text-sm font-semibold text-muted-foreground">
+                      No cover yet
+                    </span>
+                  )}
+                </span>
+                <span className="label px-4 pt-1.5">{project.category}</span>
+                <span className="px-4 text-2xl font-extrabold leading-[1.15] tracking-[-0.02em]">
+                  {project.title}
+                </span>
+                <span className="line-clamp-3 px-4 text-muted-foreground">{project.summary}</span>
+                {project.tech_stack?.length > 0 && (
+                  <span className="mt-auto flex flex-wrap gap-1.5 px-4 pt-2">
+                    {project.tech_stack.map((tech: string) => (
+                      <span key={tech} className="chip">
+                        {tech}
+                      </span>
+                    ))}
+                  </span>
                 )}
-                <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </div>
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="text-heading-md font-bold group-hover:underline">{project.title}</h3>
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{project.category}</span>
-              </div>
-              <p className="text-body-md text-body mb-4 line-clamp-2 flex-grow">
-                {project.summary}
-              </p>
-              <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-border">
-                {project.tech_stack?.map((tech: string, i: number) => (
-                  <span key={i} className="text-xs text-muted-foreground">{tech}</span>
-                ))}
-              </div>
-            </Link>
-          ))
+              </RevealLink>
+            ))}
+          </div>
         ) : (
-          <p className="text-muted-foreground col-span-2 text-center py-12 border border-border bg-surface-soft">
-            More projects coming soon.
-          </p>
+          <Reveal>
+            <p className="card p-10 text-center text-muted-foreground">No projects published yet.</p>
+          </Reveal>
         )}
-      </div>
-    </div>
-    </FadeIn>
+      </section>
+
+      <CtaBand title="Want yours on this list? Let's build it." />
+    </>
   );
 }

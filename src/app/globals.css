@@ -13,10 +13,13 @@
   --color-surface-dark-elevated: var(--surface-dark-elevated);
   --color-hairline: var(--hairline);
   --color-hairline-strong: var(--hairline-strong);
-  
+  --color-tint: var(--tint);
+  --color-accent-solid: var(--accent-solid);
+  --color-deep: var(--deep);
+
   --color-card: var(--surface-card);
   --color-card-foreground: var(--foreground);
-  --color-popover: var(--background);
+  --color-popover: var(--surface-card);
   --color-popover-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -30,59 +33,90 @@
   --color-border: var(--hairline);
   --color-input: var(--surface-soft);
   --color-ring: var(--primary);
-  
-  --font-mono: var(--font-jetbrains-mono);
-  --font-sans: var(--font-jetbrains-mono);
-  --font-heading: var(--font-jetbrains-mono);
-  
-  --radius-sm: 4px;
-  --radius-md: 4px;
-  --radius-lg: 4px;
-  --radius-xl: 4px;
+
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-heading: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Radius is a hierarchy: controls 8-14px, cards 28px, stages 32px, buttons full. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
 }
 
 :root {
-  --background: #fdfcfc; /* canvas */
-  --foreground: #201d1d; /* ink */
-  
-  --surface-soft: #f8f7f7;
-  --surface-card: #f1eeee;
-  --surface-dark: #201d1d;
-  --surface-dark-elevated: #302c2c;
-  
-  --hairline: rgba(15,0,0,0.12);
-  --hairline-strong: #646262;
-  
-  --primary: #201d1d; /* ink */
-  --primary-foreground: #fdfcfc; /* on-primary */
-  
-  --muted-foreground: #646262; /* mute */
-  
-  --accent: #007aff;
-  --destructive: #ff3b30;
-  
-  --radius: 4px;
+  --background: #e9f0ff;
+  --foreground: #0a1330;
+
+  --surface-soft: #f3f6ff;
+  --surface-card: #ffffff;
+  --surface-dark: #0a1330;
+  --surface-dark-elevated: #16204a;
+
+  --hairline: rgba(10, 19, 48, 0.12);
+  --hairline-strong: #3f4a6b;
+  --field-line: rgba(10, 19, 48, 0.45);
+
+  --primary: #0b57d0;
+  --primary-foreground: #ffffff;
+  --muted-foreground: #3f4a6b;
+
+  --accent: #0b57d0;
+  --accent-solid: #0b57d0;
+  --tint: rgba(11, 87, 208, 0.1);
+  --deep: #0a1330;
+  --destructive: #c8281e;
+
+  /* Liquid glass: a milky fill, a diagonal sheen, a bright rim, and a soft lift. */
+  --glass-fill: rgba(255, 255, 255, 0.4);
+  --glass-sheen: linear-gradient(135deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0.18));
+  --glass-edge: rgba(255, 255, 255, 0.9);
+  --glass-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(255, 255, 255, 0.35),
+    0 0 0 1px rgba(10, 30, 90, 0.05), 0 18px 44px rgba(10, 30, 90, 0.13);
+  /* Light the glass refracts. Without it a blur has nothing to show. */
+  --blob-a: #5b9bff;
+  --blob-b: #6fd6ff;
+  --blob-c: #a9b8ff;
+  --blob-o: 1;
+
+  --radius: 12px;
 }
 
 .dark {
-  --background: #201d1d; /* ink */
-  --foreground: #fdfcfc; /* canvas */
-  
-  --surface-soft: #302c2c; /* charcoal */
-  --surface-card: #424245; /* body */
-  --surface-dark: #201d1d;
-  --surface-dark-elevated: #302c2c;
-  
-  --hairline: rgba(253,252,252,0.12); /* light hairline */
-  --hairline-strong: #9a9898; /* ash */
-  
-  --primary: #fdfcfc; /* canvas as primary */
-  --primary-foreground: #201d1d; /* ink as on-primary */
-  
-  --muted-foreground: #9a9898; /* ash */
-  
-  --accent: #007aff;
-  --destructive: #ff3b30;
+  --background: #050916;
+  --foreground: #f2f5ff;
+
+  --surface-soft: #0b1228;
+  --surface-card: #0e1630;
+  --surface-dark: #0e1630;
+  --surface-dark-elevated: #16204a;
+
+  --hairline: rgba(242, 245, 255, 0.14);
+  --hairline-strong: #b3bdd8;
+  --field-line: rgba(242, 245, 255, 0.4);
+
+  --primary: #7db3ff;
+  --primary-foreground: #06102a;
+  --muted-foreground: #b3bdd8;
+
+  --accent: #7db3ff;
+  --accent-solid: #1b4fb5;
+  --tint: rgba(125, 179, 255, 0.14);
+  --deep: #111a3d;
+  --destructive: #ff6b61;
+
+  --glass-fill: rgba(255, 255, 255, 0.07);
+  --glass-sheen: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.02) 42%, rgba(255, 255, 255, 0.07));
+  --glass-edge: rgba(255, 255, 255, 0.2);
+  --glass-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26), inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+    0 18px 44px rgba(0, 0, 0, 0.45);
+  --blob-a: #1a4fd6;
+  --blob-b: #0a84c9;
+  --blob-c: #3340b8;
+  --blob-o: 0.5;
 }
 
 @layer base {
@@ -91,8 +125,262 @@
   }
   body {
     @apply bg-background text-foreground;
+    line-height: 1.55;
+  }
+  /* Fixed, so cards slide over the light as the page scrolls and the glass reads as liquid.
+     It is taller than the screen: MotionProvider moves it up a little while scrolling. */
+  .ambient {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: -10%;
+    height: 120%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: var(--blob-o);
+    background:
+      radial-gradient(720px 720px at 6% 8%, var(--blob-a), transparent 70%),
+      radial-gradient(800px 800px at 96% 20%, var(--blob-b), transparent 70%),
+      radial-gradient(640px 640px at 30% 48%, var(--blob-c), transparent 70%),
+      radial-gradient(720px 720px at 78% 62%, var(--blob-a), transparent 70%),
+      radial-gradient(760px 760px at 8% 96%, var(--blob-b), transparent 70%),
+      radial-gradient(700px 700px at 60% 100%, var(--blob-c), transparent 70%);
   }
   html {
-    @apply font-mono;
+    @apply font-sans;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  @media (min-width: 640px) {
+    .wrap {
+      padding-inline: 24px;
+    }
+  }
+
+  .display {
+    font-weight: 800;
+    font-size: clamp(38px, 5.6vw, 84px);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  .title {
+    font-weight: 800;
+    font-size: clamp(30px, 3.6vw, 50px);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .lede {
+    max-width: 640px;
+    font-size: 19px;
+    color: var(--muted-foreground);
+  }
+  .label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .card,
+  .glass,
+  .btn-quiet,
+  .hero-stage {
+    background: var(--glass-sheen), var(--glass-fill);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
+  }
+  .card {
+    border-radius: 28px;
+  }
+  /* `translate`, not `transform`: Motion owns transform while a card reveals. */
+  a.card {
+    transition: border-color 0.2s ease, translate 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+  }
+  a.card:hover {
+    border-color: var(--accent);
+    translate: 0 -3px;
+  }
+  /* Tinted glass. The sheen stays faint so white text keeps 4.5:1 over it. */
+  .card-accent {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 45%),
+      color-mix(in srgb, var(--accent-solid) 94%, transparent);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 28px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -10px 24px rgba(0, 0, 0, 0.12),
+      0 18px 44px rgba(11, 87, 208, 0.3);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
+  }
+  .band {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 45%),
+      color-mix(in srgb, var(--deep) 90%, transparent);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 32px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 18px 44px rgba(10, 19, 48, 0.3);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
+  }
+  /* The accent outline disappears on these fills, so focus switches to white. */
+  .card-accent :focus-visible,
+  .band :focus-visible {
+    outline-color: #ffffff;
+  }
+
+  /* Navbar and the hero preview card; the shared glass rule above supplies the look. */
+  .glass {
+    border-radius: 28px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 24px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, filter 0.15s ease;
+  }
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  .btn-primary {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 55%), var(--accent);
+    color: var(--primary-foreground);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55), inset 0 -8px 16px rgba(0, 0, 0, 0.1),
+      0 10px 24px rgba(11, 87, 208, 0.3);
+  }
+  .btn-primary:hover {
+    filter: brightness(1.1);
+  }
+  .btn-quiet {
+    color: var(--foreground);
+    border-radius: 999px;
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+    backdrop-filter: blur(16px) saturate(170%);
+  }
+  .btn-quiet:hover {
+    border-color: var(--accent);
+  }
+  .btn-light {
+    background: #ffffff;
+    color: #0a1330;
+  }
+  .btn-light:hover {
+    background: #e9f0ff;
+  }
+
+  .chip {
+    padding: 6px 12px;
+    background: var(--tint);
+    border: 1px solid var(--glass-edge);
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 var(--glass-edge);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .field {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px;
+    background: color-mix(in srgb, var(--surface-soft) 62%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: var(--foreground);
+    border: 1px solid var(--field-line);
+    border-radius: 14px;
+  }
+  textarea.field {
+    padding-block: 14px;
+    resize: vertical;
+  }
+
+  /* One soft light behind the logo: it marks the hero's focal point. */
+  .hero-stage {
+    border-radius: 32px;
+    background:
+      radial-gradient(46% 62% at 72% 46%, var(--tint), transparent 72%),
+      var(--glass-sheen), var(--glass-fill);
+    /* Fills the screen under the navbar (about 5rem) plus the 1rem gap below the stage;
+       the minimum keeps the headline and logo from being squeezed on short windows. */
+    height: max(640px, calc(100svh - 6.5rem));
+  }
+  @media (max-width: 980px) {
+    .hero-stage {
+      background:
+        radial-gradient(80% 42% at 50% 66%, var(--tint), transparent 72%),
+        var(--glass-sheen), var(--glass-fill);
+      height: max(900px, calc(100svh - 6.5rem));
+    }
+  }
+
+  /* No blur available, or the visitor asked for less transparency: solid surfaces, same layout. */
+  @media (prefers-reduced-transparency: reduce) {
+    .ambient {
+      display: none;
+    }
+    .card,
+    .glass,
+    .btn-quiet,
+    .hero-stage,
+    .field,
+    .card-accent,
+    .band {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .card,
+    .glass,
+    .btn-quiet,
+    .hero-stage,
+    .field {
+      background: var(--surface-card);
+    }
+    .card-accent {
+      background: var(--accent-solid);
+    }
+    .band {
+      background: var(--deep);
+    }
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .card,
+    .glass,
+    .btn-quiet,
+    .hero-stage,
+    .field {
+      background: var(--surface-card);
+    }
+    .card-accent {
+      background: var(--accent-solid);
+    }
+    .band {
+      background: var(--deep);
+    }
   }
 }

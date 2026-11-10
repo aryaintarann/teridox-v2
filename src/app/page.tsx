@@ -1,196 +1,130 @@
-import { HeroTUI } from "@/components/hero-tui";
-import Image from "next/image";
 import Link from "next/link";
-import { FadeIn } from "@/components/animations/fade-in";
+import { LogoHero } from "@/components/home/logo-hero";
+import { CtaBand } from "@/components/shared/cta-band";
+import { Reveal, RevealLink, RevealText } from "@/components/motion/reveal";
 import { createClient } from "@/lib/supabase/server";
+import { formatDate } from "@/lib/utils";
 
 export const revalidate = 60;
 
 export default async function Home() {
   const supabase = await createClient();
-  
-  // Fetch latest 4 projects
-  const { data: projects } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("status", "published")
-    .order("created_at", { ascending: false })
-    .limit(4);
-    
-  // Fetch active testimonials
-  const { data: testimonials } = await supabase
-    .from("testimonials")
-    .select("*")
-    .eq("is_active", true)
-    .order("created_at", { ascending: false });
-    
-  // Fetch latest 3 blog posts
-  const { data: blogs } = await supabase
-    .from("blog_posts")
-    .select("*")
-    .eq("status", "published")
-    .order("created_at", { ascending: false })
-    .limit(3);
+
+  const [{ data: projects }, { data: testimonials }, { data: posts }] = await Promise.all([
+    supabase
+      .from("projects")
+      .select("title")
+      .eq("status", "published")
+      .order("created_at", { ascending: false })
+      .limit(4),
+    supabase
+      .from("testimonials")
+      .select("*")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("blog_posts")
+      .select("*")
+      .eq("status", "published")
+      .order("created_at", { ascending: false })
+      .limit(5),
+  ]);
+
+  const [latest, ...older] = posts ?? [];
 
   return (
-    <div className="flex flex-col items-center w-full overflow-hidden">
-      <HeroTUI />
+    <>
+      <LogoHero
+        projectTitles={(projects ?? []).map((p) => p.title)}
+        postTitles={(posts ?? []).slice(0, 2).map((p) => p.title)}
+      />
 
-      <FadeIn delay={0.1}>
-        <section className="container mx-auto px-4 md:px-6 py-24 max-w-4xl w-full">
-          <h2 className="text-[2rem] font-bold mb-4 tracking-tight">About Teridox</h2>
-          <div className="h-[1px] w-full bg-border mb-8"></div>
-          
-          <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
-            <p>
-              Teridox was born from a deep passion for technology and the belief that every business deserves the best software solutions. We build more than products — we build the technology foundation that drives real growth.
-            </p>
-            <p>
-              With a dedicated team and strong commitment since 2024, we stand as your trusted technology partner ready to help your business grow.
-            </p>
-          </div>
-
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border border-border p-5 bg-surface-soft rounded-sm flex flex-col items-start">
-              <span className="bg-foreground text-background px-2 py-0.5 font-bold text-xs uppercase tracking-wider mb-3">Fast</span>
-              <p className="text-body-md text-foreground font-medium">On-time delivery, always.</p>
-            </div>
-            <div className="border border-border p-5 bg-surface-soft rounded-sm flex flex-col items-start">
-              <span className="bg-foreground text-background px-2 py-0.5 font-bold text-xs uppercase tracking-wider mb-3">On-Target</span>
-              <p className="text-body-md text-foreground font-medium">Solutions tailored to business needs.</p>
-            </div>
-            <div className="border border-border p-5 bg-surface-soft rounded-sm flex flex-col items-start">
-              <span className="bg-foreground text-background px-2 py-0.5 font-bold text-xs uppercase tracking-wider mb-3">Quality</span>
-              <p className="text-body-md text-foreground font-medium">Premium standards in every detail.</p>
-            </div>
+      {/* No testimonials yet means no section, never invented quotes. */}
+      {testimonials && testimonials.length > 0 && (
+        <section aria-labelledby="home-testimonials" className="wrap flex flex-col gap-9 py-[104px]">
+          <RevealText id="home-testimonials" className="title">
+            What clients say after launch
+          </RevealText>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-4">
+            {testimonials.map((t, i) => (
+              <Reveal as="figure" key={t.id} delay={(i % 2) * 0.12} className="card flex flex-col gap-8 p-7 sm:p-9">
+                <blockquote className="text-[22px] font-semibold leading-[1.4] tracking-[-0.01em]">
+                  {t.quote}
+                </blockquote>
+                <figcaption className="mt-auto flex items-center gap-3.5">
+                  <span
+                    aria-hidden="true"
+                    className="inline-flex size-12 items-center justify-center rounded-full bg-tint font-extrabold text-accent"
+                  >
+                    {t.client_name?.charAt(0)}
+                  </span>
+                  <span className="flex flex-col">
+                    <span className="font-bold">{t.client_name}</span>
+                    <span className="text-sm text-muted-foreground">{t.client_position}</span>
+                  </span>
+                </figcaption>
+              </Reveal>
+            ))}
           </div>
         </section>
-      </FadeIn>
+      )}
 
-      <FadeIn delay={0.1}>
-        <section className="container mx-auto px-4 md:px-6 py-24 max-w-4xl w-full">
-          <h2 className="text-[2rem] font-bold mb-4 tracking-tight">Our Services</h2>
-          <div className="h-[1px] w-full bg-border mb-8"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border border-border bg-surface-card p-6 rounded-sm flex flex-col hover:border-foreground transition-colors">
-              <div className="text-foreground font-mono text-xl mb-4">[+]</div>
-              <h3 className="text-xl font-bold mb-3">Web Development</h3>
-              <p className="text-muted-foreground leading-relaxed flex-grow">
-                Custom websites and web applications built with modern Jamstack technologies for maximum performance and SEO.
-              </p>
-            </div>
-            <div className="border border-border bg-surface-card p-6 rounded-sm flex flex-col hover:border-foreground transition-colors">
-              <div className="text-foreground font-mono text-xl mb-4">[+]</div>
-              <h3 className="text-xl font-bold mb-3">Mobile App Development</h3>
-              <p className="text-muted-foreground leading-relaxed flex-grow">
-                Cross-platform mobile applications that run smoothly on iOS and Android with a single codebase.
-              </p>
-            </div>
-            <div className="border border-border bg-surface-card p-6 rounded-sm flex flex-col hover:border-foreground transition-colors">
-              <div className="text-foreground font-mono text-xl mb-4">[+]</div>
-              <h3 className="text-xl font-bold mb-3">AI Integration</h3>
-              <p className="text-muted-foreground leading-relaxed flex-grow">
-                Intelligent automation and AI-driven features seamlessly integrated into your existing workflows and applications.
-              </p>
-            </div>
-          </div>
-          
-          <div className="mt-12">
-             <Link href="/contact" className="inline-block bg-background text-foreground border border-border px-6 py-3 rounded-sm hover:bg-surface-soft transition-colors font-medium">
-               Start a Project
-             </Link>
-          </div>
-        </section>
-      </FadeIn>
+      <section
+        aria-labelledby="home-blog"
+        className={`wrap flex flex-col gap-9 pb-[104px] ${testimonials?.length ? "" : "pt-[104px]"}`}
+      >
+        <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+          <RevealText id="home-blog" className="title">
+            Latest from the blog
+          </RevealText>
+          <Reveal delay={0.3}>
+            <Link href="/blog" className="btn btn-quiet">
+              View all posts <span aria-hidden="true">→</span>
+            </Link>
+          </Reveal>
+        </div>
 
-      {/* Our Work Section */}
-      <FadeIn delay={0.1}>
-        <section className="container mx-auto px-4 md:px-6 py-24 max-w-4xl w-full">
-          <div className="flex justify-between items-end mb-4">
-            <h2 className="text-[2rem] font-bold tracking-tight">Our Work</h2>
-            <Link href="/project" className="text-muted-foreground hover:text-foreground font-mono text-sm">[View all]</Link>
-          </div>
-          <div className="h-[1px] w-full bg-border mb-8"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects && projects.length > 0 ? (
-              projects.map((project: any) => (
-                <Link href={`/project`} key={project.id} className="group cursor-pointer block">
-                  <div className="w-full aspect-video bg-surface-card border border-border mb-4 overflow-hidden relative rounded-sm flex items-center justify-center">
-                     {project.cover_image_url ? (
-                        <Image src={project.cover_image_url} alt={project.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
-                     ) : (
-                        <span className="text-muted-foreground text-sm">[ No Image ]</span>
-                     )}
-                     <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </div>
-                  <h3 className="font-bold text-lg mb-1 group-hover:underline">{project.title}</h3>
-                  <p className="text-muted-foreground text-sm">{project.category}</p>
-                </Link>
-              ))
-            ) : (
-              <p className="text-muted-foreground col-span-2 py-8 text-center border border-border bg-surface-soft">
-                Projects coming soon.
-              </p>
+        {latest ? (
+          <div className="flex flex-wrap gap-4">
+            <RevealLink
+              href={`/blog/${latest.slug}`}
+              className="card-accent flex min-w-0 flex-[1_1_400px] flex-col gap-5 p-7 sm:p-10"
+            >
+              <span className="text-sm font-bold">{formatDate(latest.created_at)}</span>
+              <span className="text-[clamp(26px,2.8vw,38px)] font-extrabold leading-[1.1] tracking-[-0.02em]">
+                {latest.title}
+              </span>
+              {latest.excerpt && <span>{latest.excerpt}</span>}
+              <span className="mt-auto pt-4 font-bold">
+                Read article <span aria-hidden="true">→</span>
+              </span>
+            </RevealLink>
+
+            {older.length > 0 && (
+              <Reveal delay={0.15} className="card flex min-w-0 flex-[1.2_1_440px] flex-col px-6 py-2 sm:px-8">
+                {older.map((post, i) => (
+                  <Link
+                    key={post.id}
+                    href={`/blog/${post.slug}`}
+                    className={`group flex flex-col gap-1.5 py-[22px] ${i ? "border-t border-border" : ""}`}
+                  >
+                    <span className="text-sm font-semibold text-muted-foreground">
+                      {formatDate(post.created_at)}
+                    </span>
+                    <span className="text-[19px] font-bold leading-[1.3] tracking-[-0.01em] group-hover:underline">
+                      {post.title}
+                    </span>
+                  </Link>
+                ))}
+              </Reveal>
             )}
           </div>
-        </section>
-      </FadeIn>
+        ) : (
+          <p className="card p-8 text-center text-muted-foreground">No articles published yet.</p>
+        )}
+      </section>
 
-      {/* Client Testimonials Section */}
-      <FadeIn delay={0.1}>
-        <section className="container mx-auto px-4 md:px-6 py-24 max-w-4xl w-full">
-          <h2 className="text-[2rem] font-bold mb-4 tracking-tight">Client Testimonials</h2>
-          <div className="h-[1px] w-full bg-border mb-8"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            {testimonials && testimonials.length > 0 ? (
-              testimonials.map((testi: any) => (
-                <div key={testi.id} className="flex flex-col">
-                  <div className="text-4xl text-muted-foreground font-serif leading-none mb-2">"</div>
-                  <p className="text-lg text-foreground leading-relaxed flex-grow mb-6">
-                    {testi.quote}
-                  </p>
-                  <div className="font-bold">{testi.client_name}</div>
-                  <div className="text-sm text-muted-foreground font-mono">{testi.client_position}</div>
-                </div>
-              ))
-            ) : (
-              <p className="text-muted-foreground col-span-2">No testimonials available yet.</p>
-            )}
-          </div>
-        </section>
-      </FadeIn>
-
-      {/* Blog & Insights Section */}
-      <FadeIn delay={0.1}>
-        <section className="container mx-auto px-4 md:px-6 py-24 max-w-4xl w-full">
-          <div className="flex justify-between items-end mb-4">
-            <h2 className="text-[2rem] font-bold tracking-tight">Blog & Insights</h2>
-            <Link href="/blog" className="text-muted-foreground hover:text-foreground font-mono text-sm">[View all]</Link>
-          </div>
-          <div className="h-[1px] w-full bg-border mb-8"></div>
-          
-          <div className="space-y-6">
-            {blogs && blogs.length > 0 ? (
-              blogs.map((blog: any) => (
-                <Link key={blog.id} href={`/blog`} className="group block border border-border p-6 hover:border-foreground transition-colors bg-surface-card rounded-sm">
-                  <div className="text-sm text-muted-foreground mb-2 font-mono">
-                    {new Date(blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:underline">{blog.title}</h3>
-                  <p className="text-muted-foreground">{blog.excerpt || 'Read more about this topic.'}</p>
-                </Link>
-              ))
-            ) : (
-              <p className="text-muted-foreground py-8 text-center border border-border bg-surface-soft">
-                No articles published yet.
-              </p>
-            )}
-          </div>
-        </section>
-      </FadeIn>
-    </div>
+      <CtaBand />
+    </>
   );
 }

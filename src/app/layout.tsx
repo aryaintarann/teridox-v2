@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToasterInit } from "@/components/toaster";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
+import { MotionProvider } from "@/components/motion/provider";
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -88,14 +88,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${jetbrainsMono.variable} h-full antialiased`}>
-      <body suppressHydrationWarning className="min-h-full flex flex-col font-mono bg-background text-foreground selection:bg-accent selection:text-primary-foreground">
+    <html lang="en" suppressHydrationWarning className={`${jakarta.variable} h-full antialiased`}>
+      <body suppressHydrationWarning className="min-h-full flex flex-col font-sansbg-background text-foreground selection:bg-accent selection:text-primary-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <MotionProvider>
           <Navbar />
           <script
             type="application/ld+json"
@@ -109,6 +110,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          </MotionProvider>
           <ToasterInit />
         </ThemeProvider>
       </body>
