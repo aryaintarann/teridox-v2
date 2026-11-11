@@ -1,3 +1,4 @@
+import { jsonLdString } from "@/lib/json-ld";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -17,6 +18,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `https://teridox.com/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -65,18 +67,24 @@ export default async function BlogPost(props: { params: Promise<{ slug: string }
     "image": post.cover_image_url,
     "datePublished": post.published_at || post.created_at,
     "dateModified": post.updated_at || post.created_at,
-    "author": [{
+    "mainEntityOfPage": `https://teridox.com/blog/${post.slug}`,
+    "author": {
       "@type": "Organization",
       "name": "Teridox",
       "url": "https://teridox.com"
-    }]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Teridox",
+      "url": "https://teridox.com"
+    }
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "<") }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
 
       <section aria-label="Article intro" className="wrap flex max-w-[920px] flex-col items-start gap-6 pb-10 pt-14">

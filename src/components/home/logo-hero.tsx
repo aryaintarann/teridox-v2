@@ -104,7 +104,16 @@ export function LogoHero({
 
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const stackedQuery = window.matchMedia("(max-width: 980px)");
-      const t0 = performance.now() - (reduce ? 10000 : 0);
+      // While the intro loader covers the page the pieces wait, then assemble as it fades.
+      const html = document.documentElement.dataset;
+      let t0 =
+        html.intro === "play" && !("introDone" in html)
+          ? Infinity
+          : performance.now() - (reduce ? 10000 : 0);
+      const onIntroDone = () => {
+        t0 = performance.now();
+      };
+      window.addEventListener("intro-done", onIntroDone, { once: true });
       const ptr = { x: 0, y: 0, sx: 0, sy: 0 };
       let raf = 0;
       let visible = true;
@@ -147,7 +156,7 @@ export function LogoHero({
         camera.position.set(-shiftX, -shiftY, dist);
         camera.updateProjectionMatrix();
 
-        const now = (performance.now() - t0) / 1000;
+        const now = Math.max(0, (performance.now() - t0) / 1000);
         ptr.sx += (ptr.x - ptr.sx) * 0.08;
         ptr.sy += (ptr.y - ptr.sy) * 0.08;
         const sway = reduce ? 0 : Math.sin(now * 0.6) * 0.14;
@@ -244,6 +253,7 @@ export function LogoHero({
       cleanup = () => {
         cancelAnimationFrame(raf);
         io.disconnect();
+        window.removeEventListener("intro-done", onIntroDone);
         canvas.removeEventListener("pointerdown", onDown);
         canvas.removeEventListener("pointermove", onMove);
         canvas.removeEventListener("pointerleave", onLeave);

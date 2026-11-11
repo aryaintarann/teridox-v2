@@ -1,3 +1,4 @@
+import { jsonLdString } from "@/lib/json-ld";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -76,7 +77,7 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "<") }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
 
       <section aria-label="Project intro" className="wrap flex flex-col items-start gap-6 pb-10 pt-14">

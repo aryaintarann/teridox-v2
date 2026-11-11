@@ -185,6 +185,32 @@ export async function updateBlogPost(id: string, formData: FormData): Promise<vo
   redirect('/admin/blog')
 }
 
+export async function createTestimonial(formData: FormData): Promise<void> {
+  const supabase = await createClient()
+
+  await requireAdmin(supabase)
+
+  // Same limits as the public form in src/app/testimonial/actions.ts.
+  const data = {
+    client_name: text(formData, 'name').slice(0, 100),
+    client_position: text(formData, 'position').slice(0, 100),
+    quote: text(formData, 'quote').slice(0, 2000),
+    is_active: text(formData, 'status') === 'active',
+  }
+  if (!data.client_name || !data.quote) throw new Error('Client name and quote are required')
+
+  const { error } = await supabase.from('testimonials').insert([data])
+
+  if (error) {
+    console.error('Error creating testimonial:', error)
+    throw new Error('Failed to create testimonial')
+  }
+
+  revalidatePath('/admin/testimonials')
+  revalidatePath('/')
+  redirect('/admin/testimonials')
+}
+
 export async function toggleTestimonialStatus(id: string, currentStatus: boolean): Promise<void> {
   const supabase = await createClient()
   

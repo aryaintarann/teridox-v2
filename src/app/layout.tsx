@@ -6,6 +6,7 @@ import { ToasterInit } from "@/components/toaster";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { MotionProvider } from "@/components/motion/provider";
+import { IntroLoader } from "@/components/shared/intro-loader";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -90,12 +91,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${jakarta.variable} h-full antialiased`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sansbg-background text-foreground selection:bg-accent selection:text-primary-foreground">
+        {/* Runs before first paint: the intro plays on the home page, once per session, never with
+            reduced motion. If the app script never arrives, the timer lifts the overlay on its own. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var d=document.documentElement.dataset;if(location.pathname==="/"&&!sessionStorage.getItem("teridox-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){d.intro="play";setTimeout(function(){if(!("introDone" in d))d.intro="off"},10000)}}catch(e){}`,
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <IntroLoader />
           <MotionProvider>
           <Navbar />
           <script

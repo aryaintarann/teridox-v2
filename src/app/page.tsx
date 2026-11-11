@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoHero } from "@/components/home/logo-hero";
+import { TestimonialDeck } from "@/components/home/testimonial-deck";
 import { CtaBand } from "@/components/shared/cta-band";
 import { Reveal, RevealLink, RevealText } from "@/components/motion/reveal";
 import { createClient } from "@/lib/supabase/server";
@@ -41,30 +42,22 @@ export default async function Home() {
 
       {/* No testimonials yet means no section, never invented quotes. */}
       {testimonials && testimonials.length > 0 && (
-        <section aria-labelledby="home-testimonials" className="wrap flex flex-col gap-9 py-[104px]">
-          <RevealText id="home-testimonials" className="title">
-            What clients say after launch
-          </RevealText>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-4">
-            {testimonials.map((t, i) => (
-              <Reveal as="figure" key={t.id} delay={(i % 2) * 0.12} className="card flex flex-col gap-8 p-7 sm:p-9">
-                <blockquote className="text-[22px] font-semibold leading-[1.4] tracking-[-0.01em]">
-                  {t.quote}
-                </blockquote>
-                <figcaption className="mt-auto flex items-center gap-3.5">
-                  <span
-                    aria-hidden="true"
-                    className="inline-flex size-12 items-center justify-center rounded-full bg-tint font-extrabold text-accent"
-                  >
-                    {t.client_name?.charAt(0)}
-                  </span>
-                  <span className="flex flex-col">
-                    <span className="font-bold">{t.client_name}</span>
-                    <span className="text-sm text-muted-foreground">{t.client_position}</span>
-                  </span>
-                </figcaption>
-              </Reveal>
-            ))}
+        // Clipped sideways: a swiped card leaves the stack without widening the page.
+        <section aria-labelledby="home-testimonials" className="overflow-x-clip">
+          <div className="wrap flex flex-col gap-9 py-[104px]">
+            <RevealText id="home-testimonials" className="title text-center">
+              What clients say after launch
+            </RevealText>
+            <Reveal>
+              <TestimonialDeck
+                items={testimonials.map((t) => ({
+                  id: String(t.id),
+                  quote: t.quote ?? "",
+                  name: t.client_name ?? "",
+                  position: t.client_position ?? null,
+                }))}
+              />
+            </Reveal>
           </div>
         </section>
       )}
