@@ -11,7 +11,7 @@ import { formatDate } from "@/lib/utils";
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
   const supabase = await createClient();
-  const { data: project } = await supabase.from("projects").select("*").eq("slug", params.slug).single();
+  const { data: project } = await supabase.from("projects").select("*").eq("slug", params.slug).eq("status", "published").single();
 
   if (!project) return { title: 'Project Not Found' };
 
@@ -42,6 +42,7 @@ export default async function ProjectDetail(props: { params: Promise<{ slug: str
     .from("projects")
     .select("*")
     .eq("slug", params.slug)
+    .eq("status", "published")
     .single();
 
   if (!project) {
