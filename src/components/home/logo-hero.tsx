@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import type { Mesh, MeshStandardMaterial } from "three";
-import { Reveal, RevealText } from "@/components/motion/reveal";
+import { ease, Reveal, RevealText } from "@/components/motion/reveal";
 
 type PartId = "about" | "services" | "project" | "blog";
 
@@ -32,9 +32,13 @@ const CARD_H = 270;
 export function LogoHero({
   projectTitles,
   postTitles,
+  title,
+  intro,
 }: {
   projectTitles: string[];
   postTitles: string[];
+  title: string;
+  intro: string;
 }) {
   const router = useRouter();
   const { resolvedTheme } = useTheme();
@@ -335,15 +339,18 @@ export function LogoHero({
                 delay={0.15}
                 className="text-[clamp(36px,4.6vw,72px)] font-extrabold leading-[1.02] tracking-[-0.035em] text-balance"
               >
-                Web development, mobile apps, and AI, built to scale.
+                {title}
               </RevealText>
-              <Reveal delay={0.7}>
-                <p className="max-w-[440px] text-lg text-muted-foreground">
-                  Teridox is a web development agency in Indonesia. Since 2024 we have built
-                  websites, web apps, cross-platform mobile apps, and AI features for growing
-                  businesses.
-                </p>
-              </Reveal>
+              {/* Slides in but never starts invisible: the browser counts this paragraph as the
+                  largest paint, and an opacity fade would hold that measurement back. */}
+              <motion.p
+                className="max-w-[440px] text-lg text-muted-foreground"
+                initial={{ y: 16 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, ease, delay: 0.7 }}
+              >
+                {intro}
+              </motion.p>
               <Reveal delay={0.9} className="pointer-events-auto flex flex-wrap gap-3">
                 <Link href="/contact" className="btn btn-primary min-h-[52px] px-7">
                   Start a project

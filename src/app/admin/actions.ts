@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
+import { ADDRESS_FIELDS, SOCIALS } from '@/lib/site-settings'
 import { redirect } from 'next/navigation'
 
 const text = (f: FormData, k: string) => String(f.get(k) ?? '').trim()
@@ -235,12 +236,13 @@ export async function updateSiteSettings(formData: FormData): Promise<void> {
 
   await requireAdmin(supabase)
 
+  // Links must be http(s); plain fields are saved as typed. Empty means "do not show".
   const data = {
     email: text(formData, 'email'),
     whatsapp: text(formData, 'whatsapp'),
-    linkedin: text(formData, 'linkedin'),
-    instagram: text(formData, 'instagram'),
-    github: text(formData, 'github'),
+    ...Object.fromEntries(ADDRESS_FIELDS.map((k) => [k, text(formData, k)])),
+    maps_url: httpUrl(formData, 'maps_url'),
+    ...Object.fromEntries(SOCIALS.map(([, k]) => [k, httpUrl(formData, k)])),
     updated_at: new Date().toISOString()
   }
 

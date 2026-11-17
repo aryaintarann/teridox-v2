@@ -12,7 +12,9 @@ const links = [
 ] as const;
 
 export async function Footer() {
-  const { social } = await getSiteSettings();
+  const { social, address } = await getSiteSettings();
+  // Shown only when saved in Admin > Settings.
+  const place = [address.city, address.country].filter(Boolean).join(", ");
   return (
     <Reveal
       as="footer"
@@ -32,7 +34,9 @@ export async function Footer() {
           </a>
         ))}
       </nav>
-      <span>© {new Date().getFullYear()} Teridox. All rights reserved.</span>
+      <span>
+        © {new Date().getFullYear()} Teridox{place && `, ${place}`}. All rights reserved.
+      </span>
     </Reveal>
   );
 }

@@ -2,13 +2,25 @@ import { XMLParser } from 'fast-xml-parser'
 import type { Source, SourceItem } from './types'
 
 // Allowlist only: the AI never chooses sources. Tier 1 = primary/official, tier 2 = established security press.
+// Tier 1 is web and mobile development, the studio's own field, so the daily post is about that
+// whenever one of these published in the last 72 hours. Security news is tier 2, the fallback.
 export const SOURCES: Source[] = [
-  { name: 'CISA Advisories', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml', hosts: ['cisa.gov'], tier: 1 },
-  { name: 'Microsoft Security Blog', url: 'https://www.microsoft.com/en-us/security/blog/feed/', hosts: ['microsoft.com'], tier: 1 },
-  { name: 'Google Security Blog', url: 'https://blog.google/technology/safety-security/rss/', hosts: ['blog.google', 'googleblog.com'], tier: 1 },
-  { name: 'Cloudflare Security', url: 'https://blog.cloudflare.com/tag/security/rss/', hosts: ['blog.cloudflare.com'], tier: 1 },
-  { name: 'Chrome Developers', url: 'https://developer.chrome.com/static/blog/feed.xml', hosts: ['developer.chrome.com', 'chrome.com'], tier: 1 },
   { name: 'web.dev', url: 'https://web.dev/feed.xml', hosts: ['web.dev'], tier: 1 },
+  { name: 'Chrome Developers', url: 'https://developer.chrome.com/static/blog/feed.xml', hosts: ['developer.chrome.com', 'chrome.com'], tier: 1 },
+  { name: 'WebKit', url: 'https://webkit.org/feed/', hosts: ['webkit.org'], tier: 1 },
+  { name: 'React', url: 'https://react.dev/rss.xml', hosts: ['react.dev'], tier: 1 },
+  { name: 'Next.js', url: 'https://nextjs.org/feed.xml', hosts: ['nextjs.org'], tier: 1 },
+  { name: 'React Native', url: 'https://reactnative.dev/blog/rss.xml', hosts: ['reactnative.dev'], tier: 1 },
+  { name: 'Flutter', url: 'https://medium.com/feed/flutter', hosts: ['blog.flutter.dev', 'medium.com'], tier: 1 },
+  { name: 'Android Developers', url: 'https://developer.android.com/static/blog/atom.xml', hosts: ['developer.android.com', 'android-developers.googleblog.com'], tier: 1 },
+  { name: 'Apple Developer News', url: 'https://developer.apple.com/news/rss/news.rss', hosts: ['developer.apple.com'], tier: 1 },
+  { name: 'Smashing Magazine', url: 'https://www.smashingmagazine.com/feed/', hosts: ['smashingmagazine.com'], tier: 2 },
+  { name: 'CSS-Tricks', url: 'https://css-tricks.com/feed/', hosts: ['css-tricks.com'], tier: 2 },
+  { name: 'Laravel News', url: 'https://feed.laravel-news.com/', hosts: ['laravel-news.com'], tier: 2 },
+  { name: 'CISA Advisories', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml', hosts: ['cisa.gov'], tier: 2 },
+  { name: 'Microsoft Security Blog', url: 'https://www.microsoft.com/en-us/security/blog/feed/', hosts: ['microsoft.com'], tier: 2 },
+  { name: 'Google Security Blog', url: 'https://blog.google/technology/safety-security/rss/', hosts: ['blog.google', 'googleblog.com'], tier: 2 },
+  { name: 'Cloudflare Security', url: 'https://blog.cloudflare.com/tag/security/rss/', hosts: ['blog.cloudflare.com'], tier: 2 },
   { name: 'BleepingComputer', url: 'https://www.bleepingcomputer.com/feed/', hosts: ['bleepingcomputer.com'], tier: 2 },
   { name: 'The Hacker News', url: 'https://feeds.feedburner.com/TheHackersNews', hosts: ['thehackernews.com'], tier: 2 },
   { name: 'Krebs on Security', url: 'https://krebsonsecurity.com/feed/', hosts: ['krebsonsecurity.com'], tier: 2 },

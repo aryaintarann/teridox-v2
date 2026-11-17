@@ -12,11 +12,11 @@ import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
 import { jsonLdString } from "@/lib/json-ld";
 import { getOrgLd } from "@/lib/site-settings";
-import { HOME_FAQ, HOME_PROCESS, HOME_SERVICES, HOME_STACK, HOME_WEB_POINTS } from "./home-content";
+// Editorial copy lives in JSON; projects, posts, testimonials and contact details come from Supabase.
+import content from "@/content/home.json";
 
-const TITLE = "Web Development & Mobile App Agency | Teridox";
-const DESCRIPTION =
-  "Teridox is a web development agency in Indonesia. We build websites, web apps, cross-platform mobile apps, SaaS products, and AI integrations for growing businesses.";
+const { title: TITLE, description: DESCRIPTION } = content.meta;
+const S = content.sections;
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -84,11 +84,11 @@ const homeLd = (org: object) => ({
       foundingDate: "2024",
       ...org,
       areaServed: "Worldwide",
-      knowsAbout: [...HOME_STACK, "Web development", "Mobile app development", "SaaS", "AI integration"],
+      knowsAbout: [...content.stack, "Web development", "Mobile app development", "SaaS", "AI integration"],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Services",
-        itemListElement: HOME_SERVICES.map((s) => ({
+        itemListElement: content.services.map((s) => ({
           "@type": "Offer",
           itemOffered: { "@type": "Service", name: s.name, description: s.text },
         })),
@@ -96,7 +96,7 @@ const homeLd = (org: object) => ({
     },
     {
       "@type": "FAQPage",
-      mainEntity: HOME_FAQ.map((f) => ({
+      mainEntity: content.faq.map((f) => ({
         "@type": "Question",
         name: f.q,
         acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -140,22 +140,24 @@ export default async function Home() {
       <LogoHero
         projectTitles={(projects ?? []).map((p) => p.title)}
         postTitles={(posts ?? []).slice(0, 2).map((p) => p.title)}
+        title={content.hero.title}
+        intro={content.hero.intro}
       />
 
       <section aria-labelledby="home-services" className="wrap flex flex-col gap-9 py-[104px]">
         <SectionHeader
           id="home-services"
-          title="Web development, mobile apps, SaaS, and AI"
-          intro="Teridox is a web development and software agency. We design and build the product, then keep it running after launch."
+          title={S.services.title}
+          intro={S.services.intro}
           href="/services"
-          cta="All services"
+          cta={S.services.cta}
         />
-        <ServiceGrid main={HOME_SERVICES[0]} points={HOME_WEB_POINTS} others={HOME_SERVICES.slice(1)} />
+        <ServiceGrid main={content.services[0]} points={content.webPoints} others={content.services.slice(1)} />
       </section>
 
       {featured.length > 0 && (
         <section aria-labelledby="home-projects" className="wrap flex flex-col gap-9 pb-[104px]">
-          <SectionHeader id="home-projects" title="Recent projects" href="/project" cta="All projects" />
+          <SectionHeader id="home-projects" title={S.projects.title} href="/project" cta={S.projects.cta} />
           <Reveal>
             <ProjectReel
               items={featured.map((p) => ({
@@ -171,8 +173,8 @@ export default async function Home() {
       )}
 
       <section aria-labelledby="home-process" className="wrap flex flex-col gap-9 pb-[104px]">
-        <SectionHeader id="home-process" title="How we work" />
-        <ProcessFlow steps={HOME_PROCESS} />
+        <SectionHeader id="home-process" title={S.process.title} />
+        <ProcessFlow steps={content.process} />
       </section>
 
       {/* No testimonials yet means no section, never invented quotes. */}
@@ -180,7 +182,7 @@ export default async function Home() {
         // Clipped sideways: a swiped card leaves the stack without widening the page.
         <section aria-labelledby="home-testimonials" className="overflow-x-clip">
           <div className="wrap flex flex-col gap-9 pb-[104px]">
-            <SectionHeader id="home-testimonials" title="What clients say after launch" />
+            <SectionHeader id="home-testimonials" title={S.testimonials.title} />
             <Reveal>
               <TestimonialDeck
                 items={testimonials.map((t) => ({
@@ -199,7 +201,7 @@ export default async function Home() {
         aria-labelledby="home-blog"
         className="wrap flex flex-col gap-9 pb-[104px]"
       >
-        <SectionHeader id="home-blog" title="Latest from the blog" href="/blog" cta="All posts" />
+        <SectionHeader id="home-blog" title={S.blog.title} href="/blog" cta={S.blog.cta} />
 
         {latest ? (
           <div className="flex flex-wrap gap-4">
@@ -237,13 +239,13 @@ export default async function Home() {
             )}
           </div>
         ) : (
-          <p className="card p-8 text-center text-muted-foreground">No articles published yet.</p>
+          <p className="card p-8 text-center text-muted-foreground">{S.blog.empty}</p>
         )}
       </section>
 
       <section aria-labelledby="home-faq" className="wrap flex flex-col gap-9 pb-[104px]">
-        <SectionHeader id="home-faq" title="Frequently asked questions" />
-        <FaqList items={HOME_FAQ} />
+        <SectionHeader id="home-faq" title={S.faq.title} />
+        <FaqList items={content.faq} />
       </section>
 
       <CtaBand />

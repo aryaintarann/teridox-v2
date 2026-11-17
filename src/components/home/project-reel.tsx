@@ -14,7 +14,8 @@ export type ReelItem = {
   cover: string | null;
 };
 
-const CARD_W = "min(82vw,720px)";
+// Narrow enough on a phone that the cards either side peek in, which says "swipe".
+const CARD_W = "min(72vw,720px)";
 
 /**
  * A looping film strip: the project in the middle is in colour, the ones beside it sit back in
@@ -34,7 +35,8 @@ export function ProjectReel({ items }: { items: ReelItem[] }) {
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
-    const measure = () => setStep(el.offsetWidth + 20);
+    // Side cards shrink to 90%, which already opens a gap, so phones skip the extra 20px.
+    const measure = () => setStep(el.offsetWidth + (window.innerWidth < 640 ? 0 : 20));
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
@@ -53,7 +55,7 @@ export function ProjectReel({ items }: { items: ReelItem[] }) {
         if (e.key === "ArrowRight") go(1);
         else if (e.key === "ArrowLeft") go(-1);
       }}
-      className="overflow-x-clip py-2"
+      className="overflow-x-clip py-2 max-sm:-mx-4"
     >
       {/* One grid cell for every card, so the strip is as tall as the tallest one. */}
       <ul className="grid">
@@ -163,7 +165,7 @@ function ReelCard({
               alt=""
               fill
               draggable={false}
-              sizes="(max-width: 768px) 82vw, 720px"
+              sizes="(max-width: 768px) 72vw, 720px"
               className="object-cover"
             />
           ) : (

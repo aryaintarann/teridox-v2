@@ -1,74 +1,38 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@/lib/supabase/server';
 
+const baseUrl = 'https://teridox.com';
+
+type Row = { slug: string; updated_at: string | null; created_at: string | null };
+
+// A real change date or none at all: Google trusts lastmod only when it is accurate, and ignores
+// changefreq and priority, so those are left out.
+const changed = (r: Row) => {
+  const d = new Date(r.updated_at || r.created_at || '');
+  return Number.isNaN(d.getTime()) ? undefined : d;
+};
+const newest = (rows: Row[]) =>
+  rows.map(changed).reduce<Date | undefined>((a, d) => (d && (!a || d > a) ? d : a), undefined);
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient();
-  const baseUrl = 'https://teridox.com';
 
-  // Fetch all published projects
-  const { data: projects } = await supabase
-    .from('projects')
-    .select('slug, updated_at')
-    .eq('status', 'published');
+  const [{ data: projects }, { data: posts }] = await Promise.all([
+    supabase.from('projects').select('slug, updated_at, created_at').eq('status', 'published'),
+    supabase.from('blog_posts').select('slug, updated_at, created_at').eq('status', 'published'),
+  ]);
+  const p = (projects ?? []) as Row[];
+  const b = (posts ?? []) as Row[];
 
-  // Fetch all published blog posts
-  const { data: blogPosts } = await supabase
-    .from('blog_posts')
-    .select('slug, updated_at')
-    .eq('status', 'published');
-
-  const projectUrls = (projects || []).map((project) => ({
-    url: `${baseUrl}/project/${project.slug}`,
-    lastModified: new Date(project.updated_at || new Date()),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
-
-  const blogUrls = (blogPosts || []).map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.updated_at || new Date()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
-
-  const staticUrls = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/project`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
-      priority: 0.6,
-    },
+  return [
+    // The home page lists the latest projects and posts, so it changes when they do.
+    { url: baseUrl, lastModified: newest([...p, ...b]) },
+    { url: `${baseUrl}/services` },
+    { url: `${baseUrl}/project`, lastModified: newest(p) },
+    { url: `${baseUrl}/blog`, lastModified: newest(b) },
+    { url: `${baseUrl}/about` },
+    { url: `${baseUrl}/contact` },
+    ...p.map((r) => ({ url: `${baseUrl}/project/${r.slug}`, lastModified: changed(r) })),
+    ...b.map((r) => ({ url: `${baseUrl}/blog/${r.slug}`, lastModified: changed(r) })),
   ];
-
-  return [...staticUrls, ...projectUrls, ...blogUrls];
 }
