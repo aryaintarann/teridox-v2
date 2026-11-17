@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LogoHero } from "@/components/home/logo-hero";
+import { ProcessFlow } from "@/components/home/process-flow";
 import { ProjectReel } from "@/components/home/project-reel";
 import { TestimonialDeck } from "@/components/home/testimonial-deck";
 import { CtaBand } from "@/components/shared/cta-band";
@@ -175,24 +176,7 @@ export default async function Home() {
 
       <section aria-labelledby="home-process" className="wrap flex flex-col gap-9 pb-[104px]">
         <SectionHeader id="home-process" title="How we work" />
-        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {HOME_PROCESS.map((p, i) => (
-            <Reveal as="li" key={p.step} delay={i * 0.08} className="card flex flex-col gap-3 p-7">
-              <span className="label">0{i + 1}</span>
-              <h3 className={CARD_TITLE}>{p.step}</h3>
-              <p className="text-muted-foreground">{p.text}</p>
-            </Reveal>
-          ))}
-        </ol>
-        <Reveal as="div" delay={0.1}>
-          <ul aria-label="Technologies" className="flex flex-wrap gap-2">
-            {HOME_STACK.map((t) => (
-              <li key={t} className="chip text-sm">
-                {t}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+        <ProcessFlow steps={HOME_PROCESS} />
       </section>
 
       {/* No testimonials yet means no section, never invented quotes. */}

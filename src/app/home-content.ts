@@ -19,10 +19,10 @@ export const HOME_SERVICES = [
 ] as const;
 
 export const HOME_PROCESS = [
-  { step: "Discover", text: "We learn your goals, users, and constraints, then agree on scope." },
-  { step: "Design", text: "We shape the structure and interface before any build work starts." },
-  { step: "Build", text: "We develop in small releases so you can review working software early." },
-  { step: "Launch & support", text: "We ship, monitor, and keep improving after go-live." },
+  { step: "Discover", text: "We learn your goals, users, and constraints, then agree on scope.", output: "Agreed scope" },
+  { step: "Design", text: "We shape the structure and interface before any build work starts.", output: "Approved interface" },
+  { step: "Build", text: "We develop in small releases so you can review working software early.", output: "Working releases" },
+  { step: "Launch & support", text: "We ship, monitor, and keep improving after go-live.", output: "Live product" },
 ] as const;
 
 export const HOME_STACK = ["React", "Next.js", "React Native", "Flutter", "Node.js", "PostgreSQL", "Laravel"] as const;
