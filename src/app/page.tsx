@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LogoHero } from "@/components/home/logo-hero";
+import { FaqList } from "@/components/home/faq-list";
 import { ServiceGrid } from "@/components/home/service-grid";
 import { ProcessFlow } from "@/components/home/process-flow";
 import { ProjectReel } from "@/components/home/project-reel";
@@ -240,15 +241,7 @@ export default async function Home() {
 
       <section aria-labelledby="home-faq" className="wrap flex flex-col gap-9 pb-[104px]">
         <SectionHeader id="home-faq" title="Frequently asked questions" />
-        {/* Answers stay in the DOM and open natively, so crawlers and AI readers get them all. */}
-        <Reveal className="card flex flex-col px-6 py-2 sm:px-8">
-          {HOME_FAQ.map((f, i) => (
-            <details key={f.q} className={`py-[22px] ${i ? "border-t border-border" : ""}`}>
-              <summary className="cursor-pointer text-[19px] font-bold leading-[1.3]">{f.q}</summary>
-              <p className="mt-3 text-muted-foreground">{f.a}</p>
-            </details>
-          ))}
-        </Reveal>
+        <FaqList items={HOME_FAQ} />
       </section>
 
       <CtaBand />
