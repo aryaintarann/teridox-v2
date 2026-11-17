@@ -53,3 +53,11 @@ export const HOME_FAQ = [
     a: "Yes. Launch is not the end of the project: we monitor, fix, and keep improving the product after go-live.",
   },
 ] as const;
+
+// Taken from the services page copy, so the home page claims nothing the services page does not.
+export const HOME_WEB_POINTS = [
+  "Landing pages built to convert",
+  "Corporate sites and portals",
+  "Custom web applications",
+  "Speed, SEO, and security from day one",
+] as const;

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LogoHero } from "@/components/home/logo-hero";
+import { ServiceGrid } from "@/components/home/service-grid";
 import { ProcessFlow } from "@/components/home/process-flow";
 import { ProjectReel } from "@/components/home/project-reel";
 import { TestimonialDeck } from "@/components/home/testimonial-deck";
@@ -9,7 +10,7 @@ import { Reveal, RevealLink, RevealText } from "@/components/motion/reveal";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
 import { jsonLdString } from "@/lib/json-ld";
-import { HOME_FAQ, HOME_PROCESS, HOME_SERVICES, HOME_STACK } from "./home-content";
+import { HOME_FAQ, HOME_PROCESS, HOME_SERVICES, HOME_STACK, HOME_WEB_POINTS } from "./home-content";
 
 const TITLE = "Web Development & Mobile App Agency | Teridox";
 const DESCRIPTION =
@@ -23,7 +24,6 @@ export const metadata: Metadata = {
   twitter: { title: TITLE, description: DESCRIPTION },
 };
 
-const CARD_TITLE = "text-[22px] font-extrabold leading-[1.15] tracking-[-0.02em]";
 
 // Every home section opens the same way: headline, optional line under it, optional link on the right.
 function SectionHeader({
@@ -147,14 +147,7 @@ export default async function Home() {
           href="/services"
           cta="All services"
         />
-        <ul className="grid gap-4 sm:grid-cols-2">
-          {HOME_SERVICES.map((s, i) => (
-            <Reveal as="li" key={s.name} delay={i * 0.08} className="card flex flex-col gap-3 p-7">
-              <h3 className={CARD_TITLE}>{s.name}</h3>
-              <p className="text-muted-foreground">{s.text}</p>
-            </Reveal>
-          ))}
-        </ul>
+        <ServiceGrid main={HOME_SERVICES[0]} points={HOME_WEB_POINTS} others={HOME_SERVICES.slice(1)} />
       </section>
 
       {featured.length > 0 && (
