@@ -1,13 +1,24 @@
-# Teridox Digital Solutions - LLM Instructions
+# Teridox
 
-Welcome, AI Agent! This file contains instructions on how to interact with the Teridox website.
+> Teridox is a web development and software agency in Indonesia, founded in 2024. We build websites and web applications, cross-platform mobile apps (iOS and Android), SaaS products, and AI integrations for growing businesses.
 
-## About Us
-Teridox is a premier digital agency specializing in custom Jamstack websites, cross-platform mobile applications, and AI integration. 
+## Services
+- Web Development: custom websites and web apps built with React and Next.js for speed, SEO, and security.
+- Mobile App Development: cross-platform apps with React Native and Flutter from a single codebase.
+- SaaS Solutions: database design, authentication, payment integration, and multi-tenant logic (Node.js, PostgreSQL).
+- AI Integration: automation and AI features added to existing workflows and applications.
 
-## Forms and Interaction
-- To contact us, please use the [Contact Form](/contact).
-- Our contact form accepts `name`, `email`, `subject`, and `message` fields.
+## Pages
+- [Home](https://teridox.com/): overview, services, process, and FAQ
+- [Services](https://teridox.com/services): what we build
+- [Projects](https://teridox.com/project): recent work
+- [About](https://teridox.com/about): the team
+- [Blog](https://teridox.com/blog): articles
+- [Contact](https://teridox.com/contact): request a quote
+- [Sitemap](https://teridox.com/sitemap.xml)
 
-## Sitemap
-Please refer to our [XML Sitemap](/sitemap.xml) for a complete list of public URLs.
+## Pricing and timelines
+Pricing and timelines depend on scope. Send a short brief through the contact form and Teridox replies with a quote.
+
+## Contact
+Use the [contact form](https://teridox.com/contact). It accepts `name`, `email`, `subject`, and `message`.

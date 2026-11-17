@@ -335,12 +335,13 @@ export function LogoHero({
                 delay={0.15}
                 className="text-[clamp(36px,4.6vw,72px)] font-extrabold leading-[1.02] tracking-[-0.035em] text-balance"
               >
-                Web, mobile, and AI, built to scale.
+                Web development, mobile apps, and AI, built to scale.
               </RevealText>
               <Reveal delay={0.7}>
                 <p className="max-w-[440px] text-lg text-muted-foreground">
-                  Since 2024, Teridox has built websites, cross-platform mobile apps, and AI
-                  features for businesses that are growing.
+                  Teridox is a web development agency in Indonesia. Since 2024 we have built
+                  websites, web apps, cross-platform mobile apps, and AI features for growing
+                  businesses.
                 </p>
               </Reveal>
               <Reveal delay={0.9} className="pointer-events-auto flex flex-wrap gap-3">
