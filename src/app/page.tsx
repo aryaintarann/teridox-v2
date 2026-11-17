@@ -11,6 +11,7 @@ import { Reveal, RevealLink, RevealText } from "@/components/motion/reveal";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
 import { jsonLdString } from "@/lib/json-ld";
+import { getOrgLd } from "@/lib/site-settings";
 import { HOME_FAQ, HOME_PROCESS, HOME_SERVICES, HOME_STACK, HOME_WEB_POINTS } from "./home-content";
 
 const TITLE = "Web Development & Mobile App Agency | Teridox";
@@ -63,7 +64,7 @@ function SectionHeader({
   );
 }
 
-const homeLd = {
+const homeLd = (org: object) => ({
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -81,6 +82,7 @@ const homeLd = {
       url: "https://teridox.com",
       description: DESCRIPTION,
       foundingDate: "2024",
+      ...org,
       areaServed: "Worldwide",
       knowsAbout: [...HOME_STACK, "Web development", "Mobile app development", "SaaS", "AI integration"],
       hasOfferCatalog: {
@@ -101,7 +103,7 @@ const homeLd = {
       })),
     },
   ],
-};
+});
 
 export const revalidate = 60;
 
@@ -134,7 +136,7 @@ export default async function Home() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(homeLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(homeLd(await getOrgLd())) }} />
       <LogoHero
         projectTitles={(projects ?? []).map((p) => p.title)}
         postTitles={(posts ?? []).slice(0, 2).map((p) => p.title)}

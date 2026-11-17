@@ -251,6 +251,7 @@ export async function updateSiteSettings(formData: FormData): Promise<void> {
     throw new Error('Failed to update settings')
   }
 
-  revalidatePath('/contact')
+  // The layout carries the JSON-LD and footer, so every public page refreshes.
+  revalidatePath('/', 'layout')
   revalidatePath('/admin/settings')
 }

@@ -7,6 +7,7 @@ import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { MotionProvider } from "@/components/motion/provider";
 import { IntroLoader } from "@/components/shared/intro-loader";
+import { getOrgLd } from "@/lib/site-settings";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -35,7 +36,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Teridox | Digital Solutions Agency",
     description: "We build premium digital solutions, from modern web applications to native mobile apps.",
-    creator: "@teridox",
   },
   robots: {
     index: true,
@@ -48,19 +48,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Teridox",
-  "url": "https://teridox.com",
-  "logo": "https://teridox.com/icon.svg",
-  "description": "Digital solutions agency specializing in high-performance web development and UI/UX design.",
-  "sameAs": [
-    "https://twitter.com/teridox",
-    "https://linkedin.com/company/teridox"
-  ]
 };
 
 const mcpLd = {
@@ -83,11 +70,21 @@ const mcpLd = {
   ]
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Teridox",
+    "url": "https://teridox.com",
+    "logo": "https://teridox.com/icon.svg",
+    "description": "Digital solutions agency specializing in high-performance web development and UI/UX design.",
+    ...(await getOrgLd()),
+  };
+
   return (
     <html lang="en" suppressHydrationWarning className={`${jakarta.variable} h-full antialiased`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sansbg-background text-foreground selection:bg-accent selection:text-primary-foreground">

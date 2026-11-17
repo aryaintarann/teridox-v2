@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Reveal } from "@/components/motion/reveal";
+import { getSiteSettings } from "@/lib/site-settings";
 
 const links = [
   ["/", "Home"],
@@ -10,7 +11,8 @@ const links = [
   ["/contact", "Contact"],
 ] as const;
 
-export function Footer() {
+export async function Footer() {
+  const { social } = await getSiteSettings();
   return (
     <Reveal
       as="footer"
@@ -23,6 +25,11 @@ export function Footer() {
           <Link key={href} href={href} className="py-3 hover:text-foreground hover:underline">
             {label}
           </Link>
+        ))}
+        {social.map(({ name, url }) => (
+          <a key={name} href={url} target="_blank" rel="noopener noreferrer" className="py-3 hover:text-foreground hover:underline">
+            {name}
+          </a>
         ))}
       </nav>
       <span>© {new Date().getFullYear()} Teridox. All rights reserved.</span>
